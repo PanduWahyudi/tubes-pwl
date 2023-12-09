@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.backgroundImage {
+  background-image: url(/public/pngtree-logistics-warehouse-picture-image_1675386\ 1.png);
+  object-fit: cover;
+  width: 100%;
+}

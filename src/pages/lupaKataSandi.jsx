@@ -1,12 +1,12 @@
 import Authlayout from "../components/Layouts/Authlayout";
 import ForgetPasswordLayout from "../components/Layouts/ForgetPasswordLayout";
 
-const Home = () => {
+function LupaKataSandi() {
   return (
     <Authlayout>
       <ForgetPasswordLayout />
     </Authlayout>
   );
-};
+}
 
-export default Home;
+export default LupaKataSandi;
