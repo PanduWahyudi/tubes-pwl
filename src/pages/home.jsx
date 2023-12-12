@@ -1,10 +1,12 @@
+/* eslint-disable no-unused-vars */
 import Authlayout from "../components/Layouts/Authlayout";
-import ForgetPasswordLayout from "../components/Layouts/ForgetPasswordLayout";
+import LoginLayout from "../components/Layouts/LoginLayout";
+import React from "react";
 
 const Home = () => {
   return (
     <Authlayout>
-      <ForgetPasswordLayout />
+      <LoginLayout />
     </Authlayout>
   );
 };

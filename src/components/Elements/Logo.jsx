@@ -1,6 +1,10 @@
-function Logo() {
+/* eslint-disable no-unused-vars */
+import React from "react";
+
+function Logo(props) {
+  const { percentLeft } = props;
   return (
-    <div className="flex justify-end items-center">
+    <div className="flex justify-end items-center shadow-xl">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="72"
@@ -13,7 +17,9 @@ function Logo() {
           stroke="white"
         />
       </svg>
-      <p className="font-[' Montserrat'] text-[60px] font-[500] text-white left-[40.4%] mt-6 absolute">
+      <p
+        className={`font-[' Montserrat'] text-[60px] font-[500]  text-white ${percentLeft} mt-6 absolute text-stroke`}
+      >
         W
       </p>
     </div>

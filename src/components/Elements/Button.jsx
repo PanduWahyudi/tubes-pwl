@@ -1,10 +1,12 @@
 /* eslint-disable react/prop-types */
 
 function Button(props) {
-  const { variant, lebar, children } = props;
+  const { variant, lebar, children, type, onClick } = props;
   return (
     <button
-      className={`${variant} py-2 text-center text-white rounded-md ${lebar} `}
+      onClick={onClick}
+      type={type}
+      className={`${variant} py-2 text-center text-white   ${lebar} `}
     >
       {children}
     </button>

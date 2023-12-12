@@ -7,3 +7,16 @@
   object-fit: cover;
   width: 100%;
 }
+
+.text-stroke {
+  -webkit-text-stroke: 1px white;
+  text-stroke: 1px white;
+  color: transparent;
+}
+
+.inputBorder {
+  border-color: #8b8b8b;
+}
+.inputBorder:focus {
+  border-color: rgb(255, 0, 89);
+}

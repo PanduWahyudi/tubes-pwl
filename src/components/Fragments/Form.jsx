@@ -2,13 +2,13 @@
 import LabelForm from "../Elements/LabelForm";
 import Button from "../Elements/Button.Jsx";
 
-function Form({ children, label }) {
+function Form({ children, label, type, isi, spasi, onClick }) {
   return (
-    <div className="flex flex-col space-y-12 items-center justify-center mb-4  ">
+    <div className={`flex flex-col  items-center justify-center ${spasi}  `}>
       {label && <LabelForm>{label}</LabelForm>}
       {children}
-      <Button variant="bg-[#6B240C]" lebar="w-40">
-        Kirim
+      <Button type={type} variant="bg-[#6B240C] shadow-md rounded-md" lebar="w-40 " onClick={onClick}>
+        {isi}
       </Button>
     </div>
   );
