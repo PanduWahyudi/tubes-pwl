@@ -3,92 +3,22 @@ import { useState } from "react";
 import AdminLayout from "../components/Layouts/AdminLayout";
 import DeleteButton from "../components/Elements/DeleteButton";
 import EditButton from "../components/Elements/EditButton";
-import ActionButton from "../components/Elements/ActionButton";
-import InVisibleIcon from "../components/Elements/Icon/InvisibleIcon";
-import VisibleIcon from "../components/Elements/Icon/VisibleIcon";
-import Box from "@mui/material/Box";
-import { InputAdornment, TextField } from "@mui/material";
-import { outlinedInputClasses } from "@mui/material/OutlinedInput";
-import { createTheme, ThemeProvider, useTheme } from "@mui/material/styles";
+import Pagination from "../components/Elements/Pagination";
+import SearchBar from "../components/Elements/SearchBar";
 
 function Tes() {
   const tesClick = () => {
     console.log("Tes");
   };
-  const customTheme = (outerTheme) =>
-    createTheme({
-      palette: {
-        mode: outerTheme.palette.mode,
-      },
-      components: {
-        MuiTextField: {
-          styleOverrides: {
-            root: {
-              "--TextField-brandBorderColor": "#B2BAC2",
-              "--TextField-brandBorderHoverColor": "#B2BAC2",
-              "--TextField-brandBorderFocusedColor": "#B2BAC2",
-              "& label.Mui-focused": {
-                color: "var(--TextField-brandBorderFocusedColor)",
-              },
-            },
-          },
-        },
-        MuiOutlinedInput: {
-          styleOverrides: {
-            notchedOutline: {
-              borderColor: "var(--TextField-brandBorderColor)",
-              borderRadius: "10px",
-            },
-            root: {
-              [`&:hover .${outlinedInputClasses.notchedOutline}`]: {
-                borderColor: "var(--TextField-brandBorderHoverColor)",
-              },
-              [`&.Mui-focused .${outlinedInputClasses.notchedOutline}`]: {
-                borderColor: "var(--TextField-brandBorderFocusedColor)",
-              },
-            },
-          },
-        },
-        MuiFilledInput: {
-          styleOverrides: {
-            root: {
-              "&:before, &:after": {
-                borderBottom: "2px solid var(--TextField-brandBorderColor)",
-              },
-              "&:hover:not(.Mui-disabled, .Mui-error):before": {
-                borderBottom:
-                  "2px solid var(--TextField-brandBorderHoverColor)",
-              },
-              "&.Mui-focused:after": {
-                borderBottom:
-                  "2px solid var(--TextField-brandBorderFocusedColor)",
-              },
-            },
-          },
-        },
-        MuiInput: {
-          styleOverrides: {
-            root: {
-              "&:before": {
-                borderBottom: "2px solid var(--TextField-brandBorderColor)",
-              },
-              "&:hover:not(.Mui-disabled, .Mui-error):before": {
-                borderBottom:
-                  "2px solid var(--TextField-brandBorderHoverColor)",
-              },
-              "&.Mui-focused:after": {
-                borderBottom:
-                  "2px solid var(--TextField-brandBorderFocusedColor)",
-              },
-            },
-          },
-        },
-      },
-    });
 
-  const [hide, setHide] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1); // halaman awal
 
-  const outerTheme = useTheme();
+  const handlePageChange = (page) => {
+    // Handle logika untuk mengganti data atau melakukan fetch data untuk halaman baru
+    // Contoh: fetchData(page);
+    console.log(`Fetching data for page ${page}`);
+    setCurrentPage(page);
+  };
 
   return (
     <AdminLayout titlePage="Ini Halaman Testing">
@@ -98,6 +28,7 @@ function Tes() {
           teks="Testing"
           lebar="px-10 "
         /> */}
+      <SearchBar />
 
       <div className="relative overflow-x-auto rounded-md mt-4 mb-6 ">
         <table className="w-full text-[18px] text-center rtl:text-right  ">
@@ -154,32 +85,10 @@ function Tes() {
         </table>
       </div>
 
-      <ThemeProvider theme={customTheme(outerTheme)}>
-        <InputAdornment>
-          <Box
-            sx={{
-              width: 400,
-              maxWidth: "100%"
-            }}
-          >
-            <TextField
-              label="Outline"
-              size="small"
-              type={hide ? "password" : "text"}
-              id="fullwidth"
-              fullWidth
-              InputProps={{
-                endAdornment: (
-                  <button onClick={() => setHide(!hide)}>
-                    {hide ? <InVisibleIcon /> : <VisibleIcon />}
-                  </button>
-                ),
-              }}
-            />
-          </Box>
-          {/* Perbaikan sintaks pada bagian ini */}
-        </InputAdornment>
-      </ThemeProvider>
+      <Pagination
+        pageCount={5} // Jumlah halaman total
+        onPageChange={handlePageChange} // Callback saat halaman berubah
+      />
     </AdminLayout>
   );
 }

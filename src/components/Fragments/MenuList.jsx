@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import Category from "../Fragments/Menu Admin/Category";
 import Product from "../Fragments/Menu Admin/Product";
 import Item from "../Fragments/Menu Admin/Item";
@@ -15,49 +15,49 @@ function MenuList() {
     <div className="px-0">
       <ul>
         <li className="hover:bg-white hover:shadow-md hover:rounded w-full py-1">
-          <Link>
+          <NavLink to="/tes">
             <Product />
-          </Link>
+          </NavLink>
         </li>
         <li className="ml-8 hover:bg-white hover:shadow-md hover:rounded w-full py-1">
-          <Link>
+          <NavLink>
             <Item />
-          </Link>
+          </NavLink>
         </li>
         <li className="ml-8 hover:bg-white hover:shadow-md hover:rounded w-full py-1">
-          <Link>
+          <NavLink>
             <Category />
-          </Link>
+          </NavLink>
         </li>
         <li className="hover:bg-white hover:shadow-md hover:rounded w-full py-1">
-          <Link>
+          <NavLink>
             <IncomingGoods />
-          </Link>
+          </NavLink>
         </li>
         <li className="hover:bg-white hover:shadow-md hover:rounded w-full py-1">
-          <Link>
+          <NavLink>
             <ExitItems />
-          </Link>
+          </NavLink>
         </li>
         <li className="hover:bg-white hover:shadow-md hover:rounded w-full py-1">
-          <Link>
+          <NavLink>
             <Rack />
-          </Link>
+          </NavLink>
         </li>
         <li className="hover:bg-white hover:shadow-md hover:rounded w-full py-1">
-          <Link>
+          <NavLink>
             <UserManagement />
-          </Link>
+          </NavLink>
         </li>
         <li className="ml-8 hover:bg-white hover:shadow-md hover:rounded w-full py-1">
-          <Link>
+          <NavLink>
             <User />
-          </Link>
+          </NavLink>
         </li>
         <li className="ml-8 hover:bg-white hover:shadow-md hover:rounded w-full py-1">
-          <Link>
+          <NavLink>
             <Role />
-          </Link>
+          </NavLink>
         </li>
       </ul>
     </div>
