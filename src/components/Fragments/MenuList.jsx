@@ -15,47 +15,47 @@ function MenuList() {
     <div className="px-0">
       <ul>
         <li className="hover:bg-white hover:shadow-md hover:rounded w-full py-1">
-          <NavLink to="/tes">
+          <NavLink to="/item">
             <Product />
           </NavLink>
         </li>
         <li className="ml-8 hover:bg-white hover:shadow-md hover:rounded w-full py-1">
-          <NavLink>
+          <NavLink to="/item">
             <Item />
           </NavLink>
         </li>
         <li className="ml-8 hover:bg-white hover:shadow-md hover:rounded w-full py-1">
-          <NavLink>
+          <NavLink to="/produk/kategori">
             <Category />
           </NavLink>
         </li>
         <li className="hover:bg-white hover:shadow-md hover:rounded w-full py-1">
-          <NavLink>
+          <NavLink to="/barang-masuk">
             <IncomingGoods />
           </NavLink>
         </li>
         <li className="hover:bg-white hover:shadow-md hover:rounded w-full py-1">
-          <NavLink>
+          <NavLink to="/barang-keluar">
             <ExitItems />
           </NavLink>
         </li>
         <li className="hover:bg-white hover:shadow-md hover:rounded w-full py-1">
-          <NavLink>
+          <NavLink to="rack">
             <Rack />
           </NavLink>
         </li>
         <li className="hover:bg-white hover:shadow-md hover:rounded w-full py-1">
-          <NavLink>
+          <NavLink to="/pengguna">
             <UserManagement />
           </NavLink>
         </li>
         <li className="ml-8 hover:bg-white hover:shadow-md hover:rounded w-full py-1">
-          <NavLink>
+          <NavLink to="/pengguna">
             <User />
           </NavLink>
         </li>
         <li className="ml-8 hover:bg-white hover:shadow-md hover:rounded w-full py-1">
-          <NavLink>
+          <NavLink to="/role">
             <Role />
           </NavLink>
         </li>

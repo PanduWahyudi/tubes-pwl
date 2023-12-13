@@ -1,5 +1,4 @@
 import React from "react";
-import Logo from "../Elements/Logo";
 import MenuList from "./MenuList";
 import { Link } from "react-router-dom";
 import Exit from "./Menu Admin/Exit";
@@ -8,7 +7,7 @@ function AdminMenu() {
   return (
     <div className="  flex flex-col space-y-6">
       <div className="flex justify-center items-center py-[39px]   ">
-        <Logo percentLeft="left-[8.06%]" />
+        <img src="/public/headerLogo.png" alt="headerLogo" />
       </div>
       <div className=" h-auto w-full">
         <MenuList />

@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import * as React from "react";
+
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/home";
 import LupaKataSandi from "./pages/lupaKataSandi";

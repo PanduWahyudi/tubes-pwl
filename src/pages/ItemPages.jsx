@@ -6,20 +6,30 @@ import ActionButton from "../components/Elements/ActionButton";
 import EditButton from "../components/Elements/EditButton";
 import DeleteButton from "../components/Elements/DeleteButton";
 import Pagination from "../components/Elements/Pagination";
+import ConfirmationPopUP from "../components/Fragments/ConfirmationPopUp";
+import SucsessPopUp from "../components/Fragments/SucsessPopUp";
 
 function ItemPages() {
-  const tesClick = () => {
-    console.log("Tes");
+  const [isConfirModalOpen, setIsConfirModalOpen] = useState(false);
+  const [isSuccesModalOpen, setIsSuccesModalOpen] = useState(false);
+
+  const openConfirModal = () => {
+    setIsConfirModalOpen(true);
   };
 
-  const [currentPage, setCurrentPage] = useState(1); // halaman awal
-
-  const handlePageChange = (page) => {
-    // Handle logika untuk mengganti data atau melakukan fetch data untuk halaman baru
-    // Contoh: fetchData(page);
-    console.log(`Fetching data for page ${page}`);
-    setCurrentPage(page);
+  const closeConfirModal = () => {
+    setIsConfirModalOpen(false);
+    setIsSuccesModalOpen(true);
   };
+
+  const closeSuccesModal = () => {
+    setIsSuccesModalOpen(false);
+  };
+
+  const closeModal = () => {
+    setIsConfirModalOpen(false);
+  };
+
   return (
     <AdminLayout titlePage="Item">
       <div className="flex flex-col ">
@@ -27,7 +37,7 @@ function ItemPages() {
           <SearchBar style="left-[23%]" />
           <ActionButton teks="+ Buat Item" lebar="px-4" />
         </div>
-        <div className="relative overflow-x-auto rounded-md mt-4 mb-6 ">
+        <div className=" overflow-x-auto rounded-md mt-4 mb-6 h-96 flex flex-col justify-between">
           <table className="w-full text-[18px] text-center rtl:text-right  ">
             <thead className=" uppercase  bg-[#F0F0F0]">
               <tr className="border-b-2 border-white  ">
@@ -55,20 +65,33 @@ function ItemPages() {
                 <td className="px-6 py-4">Elektronik</td>
 
                 <td className="px-6 py-4 flex space-x-3 justify-center">
-                  <DeleteButton onClick={tesClick} />
-                  <EditButton onClick={tesClick} />
+                  <DeleteButton onClick={openConfirModal} />
+                  <EditButton />
+                  {isConfirModalOpen && (
+                    <ConfirmationPopUP
+                      onClick={openConfirModal}
+                      Ok={closeConfirModal}
+                      Cancel={closeModal}
+                      teks=" Anda Yakin Ingin Menghapus Data"
+                      type="button"
+                    />
+                  )}
+                  {isSuccesModalOpen && (
+                    <SucsessPopUp
+                      onClick={closeSuccesModal}
+                      type="button"
+                      teks="Data Sudah Terhapus"
+                    />
+                  )}
                 </td>
               </tr>
             </tbody>
           </table>
+          <Pagination
+            pageCount={5} // Jumlah halaman total
+            // Callback saat halaman berubah
+          />
         </div>
-        <div>
-            
-        </div>
-        <Pagination
-          pageCount={5} // Jumlah halaman total
-          onPageChange={handlePageChange} // Callback saat halaman berubah
-        />
       </div>
     </AdminLayout>
   );

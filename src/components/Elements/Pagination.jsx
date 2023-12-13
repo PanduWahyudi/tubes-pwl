@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ReactPaginate from "react-paginate";
 
-const Pagination = ({ pageCount, onPageChange }) => {
+const Pagination = ({ pageCount }) => {
   const [currentPage, setCurrentPage] = useState(0);
 
   const handlePageChange = (selectedPage) => {
@@ -21,9 +21,7 @@ const Pagination = ({ pageCount, onPageChange }) => {
       pageCount={pageCount}
       marginPagesDisplayed={2}
       pageRangeDisplayed={5}
-      onPageChange={handlePageChange}
       containerClassName={"pagination"}
-      activeClassName={"active"}
       initialPage={currentPage}
     />
   );
