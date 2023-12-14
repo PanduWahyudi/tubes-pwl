@@ -1,26 +1,40 @@
 import React from "react";
+import { useForm } from "react-hook-form";
 import AdminLayout from "../components/Layouts/AdminLayout";
-import InputText from "../components/Elements/InputText";
+import Input from "../components/Elements/Input";
 import ActionButton from "../components/Elements/ActionButton";
 
 function EditRolePages() {
-  const tesClick = () => {
-    console.log("Tes");
+  const { register, handleSubmit, reset, formState } = useForm({
+    defaultValues: { role: "" },
+  });
+
+  const onSubmit = (data) => {
+    console.log(data);
   };
+  React.useEffect(() => {
+    if (formState.isSubmitSuccessful) {
+      reset({ role: "" });
+    }
+  }, [formState, reset]);
 
   return (
     <AdminLayout titlePage="Edit Role">
-      <form action="flex flex-col space-y-10">
-        <div className="">
-          <InputText label="Nama Role" width="1000px" margin="my-6" />
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="flex flex-col space-y-8">
+          <Input
+            type="text"
+            label="Nama Role"
+            placeholder="Nama Role"
+            propsRegis={{
+              ...register("role", {
+                required: "Please enter your role.",
+              }),
+            }}
+          />
 
           <div className="mt-10 flex justify-end">
-            <ActionButton
-              teks="Ubah"
-              lebar="px-4 w-30"
-              type="button"
-              oncClick={tesClick}
-            />
+            <ActionButton teks="Ubah" lebar="px-4 w-30" type="submit" />
           </div>
         </div>
       </form>

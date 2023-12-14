@@ -2,11 +2,11 @@ import React from "react";
 import { useState } from "react";
 import AdminLayout from "../components/Layouts/AdminLayout";
 import SearchBar from "../components/Elements/SearchBar";
-import ActionButton from "../components/Elements/ActionButton";
+import { Link } from "react-router-dom";
 import EditButton from "../components/Elements/EditButton";
 import DeleteButton from "../components/Elements/DeleteButton";
-import SucsessPopUp from "../components/Fragments/SucsessPopUp";
 import ConfirmationPopUP from "../components/Fragments/ConfirmationPopUp";
+import SucsessPopUp from "../components/Fragments/SucsessPopUp";
 
 function ExitItemPages() {
   const [isConfirModalOpen, setIsConfirModalOpen] = useState(false);
@@ -28,12 +28,18 @@ function ExitItemPages() {
   const closeModal = () => {
     setIsConfirModalOpen(false);
   };
+
   return (
-    <AdminLayout titlePage="Barang Keluar">
+    <AdminLayout titlePage="Barang Masuk">
       <div className="flex flex-col ">
         <div className="my-2 flex justify-between items-center">
           <SearchBar style="left-[23%]" />
-          <ActionButton teks="- Barang Keluar" lebar="px-4" />
+          <Link
+            to="/barang-keluar/tambah-barang-keluar"
+            className="w-[155px] bg-[#6B240C] py-2 text-center text-white rounded-md "
+          >
+            + Barang Keluar
+          </Link>
         </div>
         <div className=" overflow-x-auto rounded-md mt-4 mb-6 h-96 flex flex-col justify-between">
           <table className="w-full text-[18px] text-center rtl:text-right  ">
@@ -46,7 +52,7 @@ function ExitItemPages() {
                   Nama Item
                 </th>
                 <th scope="col" className="p-[10px] font-medium">
-                  Tanggal Keluar
+                  Tanggal Masuk
                 </th>
                 <th scope="col" className="p-[10px] font-medium">
                   Supplier ID

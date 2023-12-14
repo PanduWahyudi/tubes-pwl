@@ -1,36 +1,81 @@
 import React from "react";
+import { useState } from "react";
 import Authlayout from "../components/Layouts/Authlayout";
 import Button from "../components/Elements/Button";
-import InputText from "../components/Elements/InputText";
+import Input from "../components/Elements/Input";
+import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import EmailInput from "../components/Elements/EmailInput";
+import InputHide from "../components/Elements/InputHide";
+import IncorrectPasswordPopUP from "../components/Fragments/IncorretPasswordPopUp";
 
 function Home() {
+  const { register, handleSubmit, reset, formState } = useForm({
+    defaultValues: { email: "", password: "" },
+  });
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const onSubmit = (data) => {
+    setIsModalOpen(true);
+    console.log(data);
+  };
+  React.useEffect(() => {
+    if (formState.isSubmitSuccessful) {
+      reset({ email: "", password: "" });
+    }
+  }, [formState, reset]);
+
   return (
     <div className="">
       <Authlayout height="h-[550px]">
-        <div className="flex space-x-4 items-center">
-          <div className="flex flex-col ">
-            <p className="text-[32px] text-center font-medium">Login</p>
-            <EmailInput label="Masukkan email" width="345px" margin="my-8" />
-            <InputText
-              label="Masukkan password"
-              width="345px"
-              margin="mt-8 mb-6"
-            />
-            <div className="flex justify-end">
-              <Link to="/lupa-kata-sandi">Lupa Password</Link>
+        <div className="flex space-x-10 items-center ">
+          <form action="" onSubmit={handleSubmit(onSubmit)}>
+            <div className="flex flex-col space-y-4  w-80 ">
+              <p className="text-[32px] text-center font-medium">Login</p>
+              <Input
+                type="text"
+                label="Masukkan email"
+                placeholder="Masukkan email"
+                propsRegis={{
+                  ...register("email", {
+                    required: "Please enter your first name.",
+                  }),
+                }}
+              />
+              <InputHide
+                className="bottom-[36%] left-[47.6%]"
+                label="Masukkan Password"
+                placeholder="Masukkan Password"
+                propsRegis={{
+                  ...register("password", {
+                    required: "Please enter your first name.",
+                  }),
+                }}
+              />
+              <div className="flex justify-end">
+                <Link to="/lupa-kata-sandi">Lupa Password</Link>
+              </div>
+              <div className=" flex justify-center mt-4">
+                <Button
+                  variant="bg-[#6B240C] rounded-md"
+                  lebar="w-[180px]  "
+                  type="submit"
+                >
+                  Login
+                </Button>
+              </div>
+              {isModalOpen && (
+                <IncorrectPasswordPopUP
+                  onClick={closeModal}
+                  type="button"
+                  teks="Password Salah"
+                />
+              )}
             </div>
-            <div className=" flex justify-center mt-4">
-              <Button
-                variant="bg-[#6B240C] rounded-md"
-                lebar="w-[180px]  "
-                type="submit"
-              >
-                Login
-              </Button>
-            </div>
-          </div>
+          </form>
 
           <div className="w-[1px] bg-black h-[450px]"></div>
           <div className="flex flex-col space-y-4">
@@ -39,13 +84,12 @@ function Home() {
             </p>
 
             <div className="flex justify-center">
-              <Button
-                variant="bg-[#6B240C] rounded-md"
-                lebar="w-[180px]  "
-                type="button"
+              <Link
+                to="/buat-akun"
+                className="w-[180px] bg-[#6B240C] py-2 text-center text-white rounded-md "
               >
-                Belum
-              </Button>
+                Buat Akun
+              </Link>
             </div>
           </div>
         </div>

@@ -1,13 +1,12 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import AdminLayout from "../components/Layouts/AdminLayout";
-import InputText from "../components/Elements/InputText";
 import Input from "../components/Elements/Input";
 import ActionButton from "../components/Elements/ActionButton";
 
-function AddRolePages() {
+function EditRackPages() {
   const { register, handleSubmit, reset, formState } = useForm({
-    defaultValues: { role: "" },
+    defaultValues: { rack: "" },
   });
 
   const onSubmit = (data) => {
@@ -15,21 +14,21 @@ function AddRolePages() {
   };
   React.useEffect(() => {
     if (formState.isSubmitSuccessful) {
-      reset({ role: "" });
+      reset({ rack: "" });
     }
   }, [formState, reset]);
 
   return (
-    <AdminLayout titlePage="Tambah Role">
+    <AdminLayout titlePage="Edit Rack">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col space-y-8">
           <Input
             type="text"
-            label="Nama Role"
-            placeholder="Nama Role"
+            label="Nama Item"
+            placeholder="Nama Item"
             propsRegis={{
-              ...register("role", {
-                required: "Please enter your role.",
+              ...register("rack", {
+                required: "Please enter your item.",
               }),
             }}
           />
@@ -43,4 +42,4 @@ function AddRolePages() {
   );
 }
 
-export default AddRolePages;
+export default EditRackPages;

@@ -26,6 +26,9 @@ import EditUserPages from "./pages/EditUserPages";
 import RolePages from "./pages/RolePages";
 import AddRolePages from "./pages/AddRolePages";
 import EditRolePages from "./pages/EditRolePages";
+import RackPages from "./pages/RackPages";
+import AddRackPages from "./pages/AddRackPages";
+import EditRackPages from "./pages/EditRackPages";
 
 const App = () => {
   return (
@@ -71,6 +74,9 @@ const App = () => {
           path="/barang-keluar/edit-barang-keluar"
           element={<EditExitItemPages />}
         />
+        <Route path="/rack" element={<RackPages />} />
+        <Route path="/rack/tambah-rack" element={<AddRackPages />} />
+        <Route path="/rack/edit-rack" element={<EditRackPages />} />
         <Route path="/pengguna" element={<User />} />
         <Route path="/pengguna/tambah-pengguna" element={<AddUserPages />} />
         <Route path="/pengguna/edit-pengguna" element={<EditUserPages />} />

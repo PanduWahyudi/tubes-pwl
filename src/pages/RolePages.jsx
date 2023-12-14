@@ -2,8 +2,8 @@ import React from "react";
 import { useState } from "react";
 import AdminLayout from "../components/Layouts/AdminLayout";
 import SearchBar from "../components/Elements/SearchBar";
-import ActionButton from "../components/Elements/ActionButton";
 import EditButton from "../components/Elements/EditButton";
+import { Link } from "react-router-dom";
 import DeleteButton from "../components/Elements/DeleteButton";
 import ConfirmationPopUP from "../components/Fragments/ConfirmationPopUp";
 import SucsessPopUp from "../components/Fragments/SucsessPopUp";
@@ -34,7 +34,12 @@ function RolePages() {
       <div className="flex flex-col ">
         <div className="my-2 flex justify-between items-center">
           <SearchBar style="left-[23%]" />
-          <ActionButton teks="+ Buat Role" lebar="px-4" />
+          <Link
+            to="/role/tambah-role"
+            className="w-[112px] bg-[#6B240C] py-2 text-center text-white rounded-md "
+          >
+            + Buat Role
+          </Link>
         </div>
         <div className=" overflow-x-auto rounded-md mt-4 mb-6 h-96 flex flex-col justify-between">
           <table className="w-full text-[18px] text-center rtl:text-right  ">
