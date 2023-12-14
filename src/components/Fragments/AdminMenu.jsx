@@ -13,7 +13,10 @@ function AdminMenu() {
         <MenuList />
       </div>
       <div className=" h-[125px] flex items-end justify-center">
-        <Link className="flex justify-center items-center bg-[#902F2F] rounded-md px-[15px] shadow-md py-[5px]">
+        <Link
+          to="/"
+          className="flex justify-center items-center bg-[#902F2F] rounded-md px-[15px] shadow-md py-[5px]"
+        >
           <Exit />
         </Link>
       </div>

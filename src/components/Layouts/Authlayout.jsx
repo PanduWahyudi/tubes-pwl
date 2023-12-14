@@ -3,17 +3,14 @@
 import React from "react";
 import Logo from "../Elements/Logo";
 
-function Authlayout({ children }) {
+function Authlayout({ children, height }) {
   return (
     <div className="backgroundImage">
-      <div className="flex flex-col justify-center items-center h-screen">
-        <div className="flex">
-          <Logo percentLeft="left-[40.4%]" />
-          <p className="mt-6 font-[' Montserrat'] text-[48px] font-normal text-white">
-            arehouse
-          </p>
+      <div className="flex flex-col justify-center items-center h-screen p-2">
+        <Logo />
+        <div className={`bg-white w-[700px] rounded-md p-[33px] ${height}`}>
+          {children}
         </div>
-        {children}
       </div>
     </div>
   );
