@@ -21,12 +21,9 @@ function InputHide({ placeholder, propsRegis, label, className }) {
           {label}
         </label>
       </div>
-      <button
-        onClick={() => setHide(!hide)}
-        className={`absolute ${className}`}
-      >
+      <a onClick={() => setHide(!hide)} className={`absolute ${className}`}>
         {hide ? <InvisibleIcon /> : <VisibleIcon />}
-      </button>
+      </a>
     </div>
   );
 }

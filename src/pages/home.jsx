@@ -24,8 +24,10 @@ function Home() {
   const onSubmit = (data) => {
     if (data.email != "admin@gmail.com " && data.password != "admin") {
       // setIsHelper(true);
+      console.log(data)
       setIsModalOpen(true);
     } else {
+      console.log(data)
       navigate("/item");
     }
   };
