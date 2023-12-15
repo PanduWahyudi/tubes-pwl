@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import InputHide from "../components/Elements/InputHide";
 import IncorrectPasswordPopUP from "../components/Fragments/IncorretPasswordPopUp";
+import Helper from "../components/Elements/Helper";
 
 function Home() {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ function Home() {
     defaultValues: { email: "", password: "" },
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [isHelper, setIsHelper] = useState(false);
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -21,6 +23,7 @@ function Home() {
 
   const onSubmit = (data) => {
     if (data.email != "admin@gmail.com " && data.password != "admin") {
+      // setIsHelper(true);
       setIsModalOpen(true);
     } else {
       navigate("/item");
@@ -44,9 +47,7 @@ function Home() {
                 label="Masukkan email"
                 placeholder="Masukkan email"
                 propsRegis={{
-                  ...register("email", {
-                    required: "Please enter your first name.",
-                  }),
+                  ...register("email"),
                 }}
               />
               <InputHide
@@ -54,9 +55,7 @@ function Home() {
                 label="Masukkan Password"
                 placeholder="Masukkan Password"
                 propsRegis={{
-                  ...register("password", {
-                    required: "Please enter your first name.",
-                  }),
+                  ...register("password"),
                 }}
               />
               <div className="flex justify-end">
@@ -71,6 +70,7 @@ function Home() {
                   Login
                 </Button>
               </div>
+              {/* {isHelper && <Helper>Maasukkan Data Yang Diperlukan</Helper>} */}
               {isModalOpen && (
                 <IncorrectPasswordPopUP
                   onClick={closeModal}

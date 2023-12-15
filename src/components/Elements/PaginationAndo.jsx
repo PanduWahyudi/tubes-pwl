@@ -23,7 +23,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
     <div className="flex justify-center mt-4">
       {showPrev && (
         <button
-          className="px-4 py-2 mx-1 border rounded bg-white text-gray-700"
+          className="bg-[#E1E1E1] p-[10px] rounded w-[35px] text-center"
           onClick={() => onPageChange(currentPage - 1)}
         >
           <svg
@@ -50,11 +50,12 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       ).map((page) => (
         <button
           key={page}
-          className={`px-4 py-2 mx-1 border rounded ${
-            currentPage === page
-              ? "bg-[#F8A849] text-black"
-              : "bg-white text-gray-700"
-          }`}
+          // className={`px-4 py-2 mx-1 border rounded ${
+          //   currentPage === page
+          //     ? "bg-[#F8A849] text-black"
+          //     : "bg-white text-gray-700"
+          // }`}
+          className="bg-[#E1E1E1] p-[10px] rounded w-[35px] text-center"
           onClick={() => onPageChange(page)}
         >
           {page}
@@ -63,7 +64,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
 
       {showNext && (
         <button
-          className="px-4 py-2 mx-1 border rounded bg-white text-gray-700"
+          className="bg-[#E1E1E1] p-[10px] rounded w-[35px] text-center"
           onClick={() => onPageChange(currentPage + 1)}
         >
           <svg
