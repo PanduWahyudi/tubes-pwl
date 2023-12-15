@@ -29,6 +29,7 @@ import EditRolePages from "./pages/EditRolePages";
 import RackPages from "./pages/RackPages";
 import AddRackPages from "./pages/AddRackPages";
 import EditRackPages from "./pages/EditRackPages";
+import RackItemPages from "./pages/RackItemPages";
 
 const App = () => {
   return (
@@ -77,6 +78,7 @@ const App = () => {
         <Route path="/rack" element={<RackPages />} />
         <Route path="/rack/tambah-rack" element={<AddRackPages />} />
         <Route path="/rack/edit-rack" element={<EditRackPages />} />
+        <Route path="/rack/item-rack" element={<RackItemPages />} />
         <Route path="/pengguna" element={<User />} />
         <Route path="/pengguna/tambah-pengguna" element={<AddUserPages />} />
         <Route path="/pengguna/edit-pengguna" element={<EditUserPages />} />

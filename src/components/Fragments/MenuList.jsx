@@ -40,7 +40,7 @@ function MenuList() {
           </NavLink>
         </li>
         <li className="hover:bg-white hover:shadow-md hover:rounded w-full py-1">
-          <NavLink to="rack">
+          <NavLink to="/rack">
             <Rack />
           </NavLink>
         </li>

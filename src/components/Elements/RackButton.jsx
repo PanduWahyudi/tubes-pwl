@@ -1,15 +1,15 @@
 import React from "react";
 import NameRackIcon from "./Icon/NameRackIcon";
+import { Link } from "react-router-dom";
 
-function RackButton({ onClick }) {
+function RackButton() {
   return (
-    <button
+    <Link
+      to="/rack/item-rack"
       className="flex justify-center items-center bg-[#E48F45] rounded-md p-[3px]"
-      type="button"
-      onClick={onClick}
     >
       <NameRackIcon />
-    </button>
+    </Link>
   );
 }
 

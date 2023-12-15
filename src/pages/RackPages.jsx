@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import AdminLayout from "../components/Layouts/AdminLayout";
 import SearchBar from "../components/Elements/SearchBar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import EditButton from "../components/Elements/EditButton";
 import DeleteButton from "../components/Elements/DeleteButton";
 import Pagination from "../components/Elements/Pagination";
@@ -11,6 +11,7 @@ import SucsessPopUp from "../components/Fragments/SucsessPopUp";
 import RackButton from "../components/Elements/RackButton";
 
 function RackPages() {
+  const navigate = useNavigate()
   const [isConfirModalOpen, setIsConfirModalOpen] = useState(false);
   const [isSuccesModalOpen, setIsSuccesModalOpen] = useState(false);
 
@@ -32,7 +33,7 @@ function RackPages() {
   };
 
   return (
-    <AdminLayout titlePage="Item">
+    <AdminLayout titlePage="Rack">
       <div className="flex flex-col ">
         <div className="my-2 flex justify-between items-center">
           <SearchBar style="left-[23%]" />
@@ -69,7 +70,7 @@ function RackPages() {
                 <td className="px-6 py-4 flex space-x-3 justify-center">
                   <RackButton />
                   <DeleteButton onClick={openConfirModal} />
-                  <EditButton />
+                  <EditButton onClick={()=>navigate("/rack/edit-rack")} />
                   {isConfirModalOpen && (
                     <ConfirmationPopUP
                       onClick={openConfirModal}

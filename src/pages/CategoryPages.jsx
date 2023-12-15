@@ -2,13 +2,14 @@ import React from "react";
 import { useState } from "react";
 import AdminLayout from "../components/Layouts/AdminLayout";
 import SearchBar from "../components/Elements/SearchBar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import EditButton from "../components/Elements/EditButton";
 import DeleteButton from "../components/Elements/DeleteButton";
 import ConfirmationPopUP from "../components/Fragments/ConfirmationPopUp";
 import SucsessPopUp from "../components/Fragments/SucsessPopUp";
 
 function CategoryPages() {
+  const navigate = useNavigate();
   const [isConfirModalOpen, setIsConfirModalOpen] = useState(false);
   const [isSuccesModalOpen, setIsSuccesModalOpen] = useState(false);
 
@@ -66,7 +67,9 @@ function CategoryPages() {
 
                 <td className="px-6 py-4 flex space-x-3 justify-center">
                   <DeleteButton onClick={openConfirModal} />
-                  <EditButton />
+                  <EditButton
+                    onClick={() => navigate("/produk/kategori/edit-kategori")}
+                  />
                   {isConfirModalOpen && (
                     <ConfirmationPopUP
                       onClick={openConfirModal}

@@ -14,7 +14,7 @@ const AdminLayout = (props) => {
 
         <CardAdmin>
           <HeaderAdmin />
-          <p className="text-[32px] font-medium mt-6">{titlePage}</p>
+          <p className="text-[32px] font-medium mt-6 mb-2">{titlePage}</p>
           {children}
         </CardAdmin>
       </div>

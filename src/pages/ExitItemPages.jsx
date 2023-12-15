@@ -2,13 +2,14 @@ import React from "react";
 import { useState } from "react";
 import AdminLayout from "../components/Layouts/AdminLayout";
 import SearchBar from "../components/Elements/SearchBar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import EditButton from "../components/Elements/EditButton";
 import DeleteButton from "../components/Elements/DeleteButton";
 import ConfirmationPopUP from "../components/Fragments/ConfirmationPopUp";
 import SucsessPopUp from "../components/Fragments/SucsessPopUp";
 
 function ExitItemPages() {
+  const navigate = useNavigate();
   const [isConfirModalOpen, setIsConfirModalOpen] = useState(false);
   const [isSuccesModalOpen, setIsSuccesModalOpen] = useState(false);
 
@@ -30,7 +31,7 @@ function ExitItemPages() {
   };
 
   return (
-    <AdminLayout titlePage="Barang Masuk">
+    <AdminLayout titlePage="Barang Keluar">
       <div className="flex flex-col ">
         <div className="my-2 flex justify-between items-center">
           <SearchBar style="left-[23%]" />
@@ -78,7 +79,11 @@ function ExitItemPages() {
 
                 <td className="px-6 py-4 flex space-x-3 justify-center">
                   <DeleteButton onClick={openConfirModal} />
-                  <EditButton />
+                  <EditButton
+                    onClick={() =>
+                      navigate("/barang-keluar/edit-barang-keluar")
+                    }
+                  />
                   {isConfirModalOpen && (
                     <ConfirmationPopUP
                       onClick={openConfirModal}

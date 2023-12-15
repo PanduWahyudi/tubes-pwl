@@ -4,11 +4,12 @@ import Authlayout from "../components/Layouts/Authlayout";
 import Button from "../components/Elements/Button";
 import Input from "../components/Elements/Input";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import InputHide from "../components/Elements/InputHide";
 import IncorrectPasswordPopUP from "../components/Fragments/IncorretPasswordPopUp";
 
 function Home() {
+  const navigate = useNavigate();
   const { register, handleSubmit, reset, formState } = useForm({
     defaultValues: { email: "", password: "" },
   });
@@ -19,8 +20,11 @@ function Home() {
   };
 
   const onSubmit = (data) => {
-    setIsModalOpen(true);
-    console.log(data);
+    if (data.email != "admin@gmail.com " && data.password != "admin") {
+      setIsModalOpen(true);
+    } else {
+      navigate("/item");
+    }
   };
   React.useEffect(() => {
     if (formState.isSubmitSuccessful) {
