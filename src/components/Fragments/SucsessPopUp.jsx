@@ -1,10 +1,10 @@
-import React from "react";
+/* eslint-disable react/prop-types */
 import Button from "../Elements/Button.Jsx";
 
 function SucsessPopUp(props) {
   const { teks, onClick, type } = props;
   return (
-    <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center first-letter ">
+    <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center first-letter z-[99]">
       {/* Backdrop atau overlay */}
       <div className="fixed top-0 left-0 right-0 bottom-0 bg-black opacity-30 z-10"></div>
 

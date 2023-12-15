@@ -2,7 +2,7 @@
 
 function Input({ placeholder, propsRegis, label, type }) {
   return (
-    <div className="relative" >
+    <div className="relative">
       <input
         type={type}
         id="floating_outlined"

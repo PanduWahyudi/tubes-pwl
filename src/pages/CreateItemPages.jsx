@@ -33,6 +33,7 @@ function CreateItemPages() {
               }),
             }}
           />
+          {/* <input type="text" className="w-full" /> */}
           <p className="mt-4 text-[24px] font-normal">Kategori</p>
           <SelectInput />
           <div className="mt-2 flex justify-end">

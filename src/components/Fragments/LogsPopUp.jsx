@@ -1,18 +1,18 @@
-import React from "react";
 import ClosePopUpLogsButton from "../Elements/ClosePopUpLogsButton";
 import Pagination from "../Elements/Pagination";
 
+// eslint-disable-next-line react/prop-types
 function LogsPopUp({ onClick, pageCount }) {
   return (
     <>
       {/* Modal */}
-      <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center ">
+      <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-[99] ">
         <div
           className="fixed top-0 left-0 w-full h-full bg-black opacity-40"
           onClick={onClick}
         ></div>
         {/* Modal content */}
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-[10px] w-11/12 h-[600px] bg-[#E48F45] rounded-md">
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-[10px] w-11/12 h-[600px] bg-[#E48F45]  rounded-md">
           <div className="flex justify-between items-center p-2">
             <p className="text-[24px] font-medium">Logs</p>
             <ClosePopUpLogsButton type="button" onClick={onClick} />
