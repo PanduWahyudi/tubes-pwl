@@ -3,6 +3,7 @@ import CardAdmin from "../components/Elements/CardAdmin";
 import AdminMenu from "../components/Fragments/AdminMenu";
 import HeaderAdmin from "../components/Fragments/HeaderAdmin";
 
+// eslint-disable-next-line react/prop-types
 const RackLayout = ({ children }) => {
   return (
     <div className="bg-[#E48F45] p-[5px] h-screen">

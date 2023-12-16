@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
 import { useState } from "react";
 import InvisibleIcon from "./Icon/InvisibleIcon";
@@ -7,6 +8,7 @@ import { InputAdornment, TextField } from "@mui/material";
 import { outlinedInputClasses } from "@mui/material/OutlinedInput";
 import { createTheme, ThemeProvider, useTheme } from "@mui/material/styles";
 
+// eslint-disable-next-line react/prop-types
 function InputText({ label, width, margin }) {
   const customTheme = (outerTheme) =>
     createTheme({

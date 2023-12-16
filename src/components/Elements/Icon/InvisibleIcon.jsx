@@ -1,9 +1,9 @@
 /* eslint-disable react/no-unknown-property */
-function InvisibleIcon(props) {
-  const { invisible } = props;
+function InvisibleIcon() {
+  
   return (
     <svg
-      className={`${invisible}`}
+      
       xmlns="http://www.w3.org/2000/svg"
       width="30"
       height="30"

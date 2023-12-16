@@ -1,4 +1,3 @@
-import React from "react";
 import NameRackIcon from "./Icon/NameRackIcon";
 import { Link } from "react-router-dom";
 

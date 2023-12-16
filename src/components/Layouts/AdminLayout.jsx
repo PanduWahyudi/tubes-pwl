@@ -1,9 +1,11 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
 import CardAdmin from "../Elements/CardAdmin";
 import AdminMenu from "../Fragments/AdminMenu";
 import HeaderAdmin from "../Fragments/HeaderAdmin";
 
 const AdminLayout = (props) => {
+  // eslint-disable-next-line react/prop-types
   const { children, titlePage } = props;
   return (
     <div className="bg-[#E48F45] p-[5px] h-screen">

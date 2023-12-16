@@ -1,6 +1,5 @@
-import React from "react";
-
 function ActionButton(props) {
+  // eslint-disable-next-line react/prop-types
   const { teks, type, onClick, lebar } = props;
   return (
     <button

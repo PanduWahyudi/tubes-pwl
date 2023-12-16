@@ -1,10 +1,8 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/no-unknown-property */
-function VisibleIcon(props) {
-  const { visible } = props;
+function VisibleIcon() {
   return (
     <svg
-      className={`${visible}`}
       xmlns="http://www.w3.org/2000/svg"
       width="30"
       height="30"

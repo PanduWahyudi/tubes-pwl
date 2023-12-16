@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
 
 import Box from "@mui/material/Box";
@@ -5,6 +6,7 @@ import { InputAdornment, TextField } from "@mui/material";
 import { outlinedInputClasses } from "@mui/material/OutlinedInput";
 import { createTheme, ThemeProvider, useTheme } from "@mui/material/styles";
 
+// eslint-disable-next-line react/prop-types
 function OtpInput({ label, width, margin }) {
   const customTheme = (outerTheme) =>
     createTheme({

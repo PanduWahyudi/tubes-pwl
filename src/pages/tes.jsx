@@ -1,6 +1,5 @@
 // import React from "react";
-import React from "react";
-import CrossIcon from "../components/Elements/Icon/CrossIcon";
+
 
 function tes() {
   const opsi = [

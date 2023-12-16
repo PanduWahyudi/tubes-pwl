@@ -1,6 +1,7 @@
-import React from "react";
+
 import TrashIcon from "./Icon/TrashIcon";
 
+// eslint-disable-next-line react/prop-types
 function DeleteButton({ onClick }) {
   return (
     <button

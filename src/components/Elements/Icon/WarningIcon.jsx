@@ -1,5 +1,3 @@
-import React from "react";
-
 function WarningIcon() {
   return (
     <svg
@@ -12,23 +10,23 @@ function WarningIcon() {
       <path
         d="M60 110C87.6142 110 110 87.6142 110 60C110 32.3858 87.6142 10 60 10C32.3858 10 10 32.3858 10 60C10 87.6142 32.3858 110 60 110Z"
         stroke="#D2AF55"
-        stroke-width="8"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M60 40V60"
         stroke="#D2AF55"
-        stroke-width="8"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M60 80H60.048"
         stroke="#D2AF55"
-        stroke-width="8"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );

@@ -1,5 +1,3 @@
-import React from "react";
-
 function CrossIcon() {
   return (
     <svg
@@ -12,16 +10,16 @@ function CrossIcon() {
       <path
         d="M37.5 12.5L12.5 37.5"
         stroke="black"
-        stroke-width="4"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M12.5 12.5L37.5 37.5"
         stroke="black"
-        stroke-width="4"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
