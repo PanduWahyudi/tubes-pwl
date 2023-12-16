@@ -15,7 +15,7 @@ function Home() {
     defaultValues: { email: "", password: "" },
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // const [isHelper, setIsHelper] = useState(false);
+  const [isHelper, setIsHelper] = useState(false);
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -24,10 +24,11 @@ function Home() {
   const onSubmit = (data) => {
     if (data.email != "admin@gmail.com " && data.password != "admin") {
       // setIsHelper(true);
-      console.log(data)
+      setIsHelper(true);
+      console.log(data);
       setIsModalOpen(true);
     } else {
-      console.log(data)
+      console.log(data);
       navigate("/item");
     }
   };
@@ -53,7 +54,7 @@ function Home() {
                 }}
               />
               <InputHide
-                className="bottom-[36%] left-[47.6%]"
+                className="right-1 bottom-2"
                 label="Masukkan Password"
                 placeholder="Masukkan Password"
                 propsRegis={{
@@ -72,7 +73,9 @@ function Home() {
                   Login
                 </Button>
               </div>
-              {/* {isHelper && <Helper>Maasukkan Data Yang Diperlukan</Helper>} */}
+              <Helper hide={!isHelper ? "hidden" : ""}>
+                Maasukkan Data yang diperlukan{" "}
+              </Helper>
               {isModalOpen && (
                 <IncorrectPasswordPopUP
                   onClick={closeModal}

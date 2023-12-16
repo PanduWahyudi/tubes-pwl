@@ -1,25 +1,24 @@
 import React from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Authlayout from "../components/Layouts/Authlayout";
-// import EmailInput from "../components/Elements/EmailInput";
 import { useForm } from "react-hook-form";
+import Helper from "../components/Elements/Helper";
 import Input from "../components/Elements/Input";
 import Button from "../components/Elements/Button";
-import SucsessPopUp from "../components/Fragments/SucsessPopUp";
 
 function SendOtp() {
   const { register, handleSubmit, reset, formState } = useForm({
     defaultValues: { otp: " " },
   });
 
-  const [isSuccesModalOpen, setIsSuccesModalOpen] = useState(false);
+  const navigate = useNavigate();
 
-  const closeSuccesModal = () => {
-    setIsSuccesModalOpen(false);
-  };
+  const [isHelper, setIsHelper] = useState(false);
 
   const onSubmit = (data) => {
-    setIsSuccesModalOpen(true);
+    navigate("/ubah-password");
+    setIsHelper(true)
     console.log(data);
   };
   React.useEffect(() => {
@@ -53,17 +52,10 @@ function SendOtp() {
               >
                 Kirim Kode OTP
               </Button>
-
-              {isSuccesModalOpen && (
-                <SucsessPopUp
-                  onClick={closeSuccesModal}
-                  type="button"
-                  teks="Kode OTP telah dikirim"
-                />
-              )}
-              {/* <input type="submit" /> */}
-              {/* <button type="submit">Sub</button> */}
             </div>
+            <Helper hide={!isHelper ? "hidden" : ""}>
+              Masukkan Data yang diperlukan{" "}
+            </Helper>
           </div>
         </div>
       </form>

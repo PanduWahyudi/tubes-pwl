@@ -2,9 +2,11 @@ import React from "react";
 import { useState } from "react";
 import Authlayout from "../components/Layouts/Authlayout";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import Button from "../components/Elements/Button";
 import InputHide from "../components/Elements/InputHide";
 import SucsessPopUp from "../components/Fragments/SucsessPopUp";
+import Helper from "../components/Elements/Helper";
 
 function NewPassword() {
   const { register, handleSubmit, reset, formState } = useForm({
@@ -12,11 +14,17 @@ function NewPassword() {
   });
   const [isSuccesModalOpen, setIsSuccesModalOpen] = useState(false);
 
+  const [isHelper, setIsHelper] = useState(false);
+
+  const navigate = useNavigate();
+
   const closeSuccesModal = () => {
+    navigate("/");
     setIsSuccesModalOpen(false);
   };
 
   const onSubmit = (data) => {
+    setIsHelper(true);
     setIsSuccesModalOpen(true);
     console.log(data);
   };
@@ -35,7 +43,7 @@ function NewPassword() {
               Buat Password Baru
             </p>
             <InputHide
-              className="right-[26.2%] bottom-[44.5%]"
+              className="bottom-2 right-1"
               label="Masukkan Password Baru"
               placeholder="Masukkan Password Baru"
               propsRegis={{
@@ -45,7 +53,7 @@ function NewPassword() {
               }}
             />
             <InputHide
-              className="right-[26.2%] bottom-[31.8%]"
+              className="bottom-2 right-1"
               label="Masukkan Ulang Password Baru"
               placeholder="Masukkan Ulang Password Baru"
               propsRegis={{
@@ -68,12 +76,15 @@ function NewPassword() {
                 <SucsessPopUp
                   onClick={closeSuccesModal}
                   type="button"
-                  teks="Passwword Berhasil Diubah"
+                  teks="Password Berhasil Diubah"
                 />
               )}
               {/* <input type="submit" /> */}
               {/* <button type="submit">Sub</button> */}
             </div>
+            <Helper hide={!isHelper ? "hidden" : ""}>
+              Masukkan Data yang diperlukan{" "}
+            </Helper>
           </div>
         </div>
       </form>

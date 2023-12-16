@@ -1,16 +1,32 @@
 import React from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Authlayout from "../components/Layouts/Authlayout";
 // import EmailInput from "../components/Elements/EmailInput";
 import { useForm } from "react-hook-form";
 import Input from "../components/Elements/Input";
 import Button from "../components/Elements/Button";
-import InputHide from "../components/Elements/InputHide";
+import Helper from "../components/Elements/Helper";
+import SucsessPopUp from "../components/Fragments/SucsessPopUp";
 
 function ForgetPassword() {
+  const [isSuccesModalOpen, setIsSuccesModalOpen] = useState(false);
+  const [isHelper, setIsHelper] = useState(false);
+  const navigate = useNavigate();
+
+  const closeSuccesModal = () => {
+    navigate("/kode-otp");
+    setIsSuccesModalOpen(false);
+  };
+
   const { register, handleSubmit, reset, formState } = useForm({
     defaultValues: { email: "" },
   });
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    setIsHelper(true);
+    setIsSuccesModalOpen(true);
+    console.log(data);
+  };
   React.useEffect(() => {
     if (formState.isSubmitSuccessful) {
       reset({ email: "" });
@@ -20,7 +36,7 @@ function ForgetPassword() {
     <Authlayout height="h-[300px]">
       <form action="" onSubmit={handleSubmit(onSubmit)}>
         <div className=" flex flex-col justify-center items-center">
-          <div className=" space-y-8   w-full ">
+          <div className=" space-y-8   w-full py-1  ">
             <p className="text-[32px] text-center font-medium">Lupa Password</p>
             <Input
               type="text"
@@ -39,11 +55,20 @@ function ForgetPassword() {
                 lebar="w-[180px]  "
                 type="submit"
               >
-                Kirim Password
+                Kirim
               </Button>
-              {/* <input type="submit" /> */}
-              {/* <button type="submit">Sub</button> */}
             </div>
+
+            <Helper hide={!isHelper ? "hidden" : ""}>
+              Masukkan Data yang diperlukan{" "}
+            </Helper>
+            {isSuccesModalOpen && (
+              <SucsessPopUp
+                onClick={closeSuccesModal}
+                type="button"
+                teks="Kode OTP Telah Dikirim"
+              />
+            )}
           </div>
         </div>
       </form>

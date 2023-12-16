@@ -2,10 +2,11 @@ import VisibleIcon from "./Icon/VisibleIcon";
 import InvisibleIcon from "./Icon/InvisibleIcon";
 import { useState } from "react";
 
+// eslint-disable-next-line react/prop-types
 function InputHide({ placeholder, propsRegis, label, className }) {
   const [hide, setHide] = useState();
   return (
-    <div>
+    <div className="relative">
       <div className="relative">
         <input
           type={hide ? "password" : "text"}

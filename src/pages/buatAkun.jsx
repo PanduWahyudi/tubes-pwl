@@ -4,21 +4,27 @@ import Authlayout from "../components/Layouts/Authlayout";
 import Button from "../components/Elements/Button";
 import Input from "../components/Elements/Input";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import SucsessPopUp from "../components/Fragments/SucsessPopUp";
 import InputHide from "../components/Elements/InputHide";
+import Helper from "../components/Elements/Helper";
 
 function CreateAccount() {
   const { register, handleSubmit, reset, formState } = useForm({
     defaultValues: { email: "", password: "", newPassword: "" },
   });
   const [isSuccesModalOpen, setIsSuccesModalOpen] = useState(false);
+  const [isHelper, setIsHelper] = useState(false);
 
+  const navigate = useNavigate();
   const closeSuccesModal = () => {
+    navigate("/");
     setIsSuccesModalOpen(false);
   };
 
   const onSubmit = (data) => {
+    setIsHelper(true);
     setIsSuccesModalOpen(true);
     console.log(data);
   };
@@ -62,7 +68,7 @@ function CreateAccount() {
                 }}
               />
               <InputHide
-                className="bottom-[39.5%] right-[26%]"
+                className="bottom-2 right-1"
                 label="Masukkan Password Baru"
                 placeholder="Masukkan Password Baru"
                 propsRegis={{
@@ -72,7 +78,7 @@ function CreateAccount() {
                 }}
               />
               <InputHide
-                className="bottom-[29%] right-[26%]"
+                className="bottom-2 right-1"
                 label="Masukkan ulang Password Baru"
                 placeholder="Masukkan Ulang Password Baru"
                 propsRegis={{
@@ -99,6 +105,9 @@ function CreateAccount() {
                   />
                 )}
               </div>
+              <Helper hide={!isHelper ? "hidden" : ""}>
+                Maasukkan Data yang diperlukan{" "}
+              </Helper>
             </div>
           </form>
         </div>
