@@ -1,4 +1,6 @@
 import { useState } from "react";
+import React from "react";
+import { useForm } from "react-hook-form";
 import CardAdmin from "../components/Elements/CardAdmin";
 import AdminMenu from "../components/Fragments/AdminMenu";
 import HeaderAdmin from "../components/Fragments/HeaderAdmin";
@@ -49,6 +51,29 @@ function RackItemPages() {
       item: "Televisi 12",
     },
   ];
+  const [isSuccesUpdate, setIsSuccesUpdate] = useState(false);
+  const { register, handleSubmit, reset, formState } = useForm({
+    defaultValues: { countries: "" },
+  });
+  const [selectedOption, setSelectedOption] = useState("");
+
+  const onSubmit = (data) => {
+    console.log("Kategori yang dipilih:", selectedOption);
+    setIsAddItemModal(false);
+    setIsEditItemModal(false);
+    setIsSuccesUpdate(true);
+    console.log(data);
+  };
+  React.useEffect(() => {
+    if (formState.isSubmitSuccessful) {
+      reset({ countries: "" });
+    }
+  }, [formState, reset]);
+
+  const closeSuccesUpdate = () => {
+    setIsSuccesUpdate(false);
+  };
+
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
 
@@ -68,17 +93,12 @@ function RackItemPages() {
 
   const [isConfirModalOpen, setIsConfirModalOpen] = useState(false);
   const [isSuccesModalOpen, setIsSuccesModalOpen] = useState(false);
-  const [isSuccesUpdate, setIsSuccesUpdate] = useState(false);
+
   const [isAddItemModal, setIsAddItemModal] = useState(false);
   const [isEditItemModal, setIsEditItemModal] = useState(false);
 
   const openAddItemModal = () => {
     setIsAddItemModal(true);
-  };
-
-  const closeAddItemModal = () => {
-    setIsAddItemModal(false);
-    setIsSuccesUpdate(true);
   };
 
   const closeAddModal = () => {
@@ -93,11 +113,6 @@ function RackItemPages() {
     setIsEditItemModal(true);
   };
 
-  const closeEditItemModal = () => {
-    setIsEditItemModal(false);
-    setIsSuccesUpdate(true);
-  };
-
   const openConfirModal = () => {
     setIsConfirModalOpen(true);
   };
@@ -109,9 +124,6 @@ function RackItemPages() {
 
   const closeSuccesModal = () => {
     setIsSuccesModalOpen(false);
-  };
-  const closeSuccesUpdate = () => {
-    setIsSuccesUpdate(false);
   };
 
   const closeModal = () => {
@@ -261,58 +273,62 @@ function RackItemPages() {
             </div>
             {/* Modal Add RackItem */}
             {isAddItemModal && (
-              <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-black bg-opacity-50 z-[99]">
-                <div className="bg-white py-[8px] px-[13px] w-96 rounded-md">
-                  <div className="flex justify-between items-center border-b border-black">
-                    <p className="text-[24px] font-medium">Tambah Item</p>
-                    <svg
-                      className="cursor-pointer"
-                      onClick={closeAddModal}
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="31"
-                      height="30"
-                      viewBox="0 0 31 30"
-                      fill="none"
-                    >
-                      <path
-                        d="M22.9004 7.5L7.90039 22.5"
-                        stroke="black"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M7.90039 7.5L22.9004 22.5"
-                        stroke="black"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </div>
-                  <div className="my-4">
-                    <p className="text-[24px]">Item</p>
-                    <select
-                      id="countries"
-                      className="border border-[#8B8B8B] text-gray-900 text-sm rounded-lg focus:outline-none focus:visible focus:ring-[#8B8B8B] focus:border-[#8B8B8B] block w-8/12 p-2.5 mt-2"
-                    >
-                      {opsi.map((option) => (
-                        <option key={option.id} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="flex justify-end">
-                    <button
-                      className="text-center text-white bg-[#6B240C] p-[10px] rounded-md"
-                      onClick={closeAddItemModal}
-                    >
-                      Simpan
-                    </button>
+              <form action="" onSubmit={handleSubmit(onSubmit)}>
+                <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-black bg-opacity-50 z-[99]">
+                  <div className="bg-white py-[8px] px-[13px] w-96 rounded-md">
+                    <div className="flex justify-between items-center border-b border-black">
+                      <p className="text-[24px] font-medium">Tambah Item</p>
+                      <svg
+                        className="cursor-pointer"
+                        onClick={closeAddModal}
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="31"
+                        height="30"
+                        viewBox="0 0 31 30"
+                        fill="none"
+                      >
+                        <path
+                          d="M22.9004 7.5L7.90039 22.5"
+                          stroke="black"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M7.90039 7.5L22.9004 22.5"
+                          stroke="black"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </div>
+                    <div className="my-4">
+                      <p className="text-[24px]">Item</p>
+                      <select
+                        id="countries"
+                        {...register("countries")}
+                        onChange={(e) => setSelectedOption(e.target.value)}
+                        className="border border-[#8B8B8B] text-gray-900 text-sm rounded-lg focus:outline-none focus:visible focus:ring-[#8B8B8B] focus:border-[#8B8B8B] block w-8/12 p-2.5 mt-2"
+                      >
+                        {opsi.map((option) => (
+                          <option key={option.id} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="flex justify-end">
+                      <button
+                        type="submit"
+                        className="text-center text-white bg-[#6B240C] p-[10px] rounded-md"
+                      >
+                        Simpan
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </form>
             )}
 
             {isSuccesUpdate && (
@@ -327,56 +343,59 @@ function RackItemPages() {
 
             {isEditItemModal && (
               <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-black bg-opacity-50 z-[99]">
-                <div className="bg-white py-[8px] px-[13px] w-96 rounded-md">
-                  <div className="flex justify-between items-center border-b border-black">
-                    <p className="text-[24px] font-medium">Edit Item</p>
-                    <svg
-                      onClick={closeEditModal}
-                      className="cursor-pointer"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="31"
-                      height="30"
-                      viewBox="0 0 31 30"
-                      fill="none"
-                    >
-                      <path
-                        d="M22.9004 7.5L7.90039 22.5"
-                        stroke="black"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M7.90039 7.5L22.9004 22.5"
-                        stroke="black"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
+                <form action="" onSubmit={handleSubmit(onSubmit)}>
+                  <div className="bg-white py-[8px] px-[13px] w-96 rounded-md">
+                    <div className="flex justify-between items-center border-b border-black">
+                      <p className="text-[24px] font-medium">Edit Item</p>
+                      <svg
+                        onClick={closeEditModal}
+                        className="cursor-pointer"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="31"
+                        height="30"
+                        viewBox="0 0 31 30"
+                        fill="none"
+                      >
+                        <path
+                          d="M22.9004 7.5L7.90039 22.5"
+                          stroke="black"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M7.90039 7.5L22.9004 22.5"
+                          stroke="black"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </div>
+                    <div className="my-4">
+                      <p className="text-[24px]">Item</p>
+                      <select
+                        id="countries"
+                        {...register("countries")}
+                        className="border border-[#8B8B8B] text-gray-900 text-sm rounded-lg focus:outline-none focus:visible focus:ring-[#8B8B8B] focus:border-[#8B8B8B] block w-8/12 p-2.5 mt-2"
+                      >
+                        {opsi.map((option) => (
+                          <option key={option.id} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="flex justify-end">
+                      <button
+                        type="submit"
+                        className="text-center text-white bg-[#6B240C] p-[10px] rounded-md"
+                      >
+                        Ubah
+                      </button>
+                    </div>
                   </div>
-                  <div className="my-4">
-                    <p className="text-[24px]">Item</p>
-                    <select
-                      id="countries"
-                      className="border border-[#8B8B8B] text-gray-900 text-sm rounded-lg focus:outline-none focus:visible focus:ring-[#8B8B8B] focus:border-[#8B8B8B] block w-8/12 p-2.5 mt-2"
-                    >
-                      {opsi.map((option) => (
-                        <option key={option.id} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="flex justify-end">
-                    <button
-                      className="text-center text-white bg-[#6B240C] p-[10px] rounded-md"
-                      onClick={closeEditItemModal}
-                    >
-                      Ubah
-                    </button>
-                  </div>
-                </div>
+                </form>
               </div>
             )}
           </div>

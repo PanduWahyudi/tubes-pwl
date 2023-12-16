@@ -1,4 +1,3 @@
-import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import Category from "../Fragments/Menu Admin/Category";
 import Product from "../Fragments/Menu Admin/Product";
@@ -21,7 +20,7 @@ function MenuList() {
           className={` hover:bg-white hover:shadow-md hover:rounded w-full py-1 ${
             location.pathname.startsWith("/item") ||
             location.pathname === "/produk/item/tambah-produk" ||
-            location.pathname === "/produk/edit/edit-produk" ||
+            location.pathname === "/produk/item/edit-produk" ||
             location.pathname === "/produk/kategori" ||
             location.pathname === "/produk/kategori/tambah-kategori" ||
             location.pathname === "/produk/kategori/edit-kategori"
@@ -35,8 +34,10 @@ function MenuList() {
         </li>
         <li
           className={`ml-8 hover:bg-white hover:shadow-md hover:rounded w-full py-1 ${
-            location.pathname === "/item"
-              ? "bg-white shadow-md rounded w-full ml-8 py-1"
+            location.pathname.startsWith("/item") ||
+            location.pathname === "/produk/item/tambah-produk" ||
+            location.pathname === "/produk/item/edit-produk"
+              ? "bg-white shadow-md rounded w-full py-1 ml-8"
               : ""
           }`}
         >

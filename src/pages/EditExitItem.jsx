@@ -1,15 +1,21 @@
 import React from "react";
 import AdminLayout from "../components/Layouts/AdminLayout";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import Input from "../components/Elements/Input";
 import { useForm } from "react-hook-form";
 import ActionButton from "../components/Elements/ActionButton";
+import SucsessPopUp from "../components/Fragments/SucsessPopUp";
 
-function EditExitItemPages() {
+function EditExitItem() {
   const { register, handleSubmit, reset, formState } = useForm({
     defaultValues: { item: "", date: "", supplierId: "", qty: 0 },
   });
 
+  const [isSuccesUpdate, setIsSuccesUpdate] = useState(false);
+
   const onSubmit = (data) => {
+    setIsSuccesUpdate(true);
     console.log(data);
   };
   React.useEffect(() => {
@@ -17,6 +23,14 @@ function EditExitItemPages() {
       reset({ item: "", date: "", supplierId: "", qty: 0 });
     }
   }, [formState, reset]);
+
+  const navigate = useNavigate();
+
+  const closeSuccesUpdate = () => {
+    setIsSuccesUpdate(false);
+
+    navigate("/barang-keluar");
+  };
 
   return (
     <AdminLayout titlePage="Edit Barang Keluar">
@@ -71,12 +85,19 @@ function EditExitItemPages() {
           </div>
 
           <div className="mt-6 flex justify-end">
-            <ActionButton teks="Ubah" lebar="px-4 w-30" type="submit" />
+            <ActionButton teks="Simpan" lebar="px-4 w-30" type="submit" />
           </div>
         </form>
+        {isSuccesUpdate && (
+          <SucsessPopUp
+            onClick={closeSuccesUpdate}
+            type="button"
+            teks="Data Tersimpan"
+          />
+        )}
       </div>
     </AdminLayout>
   );
 }
 
-export default EditExitItemPages;
+export default EditExitItem;

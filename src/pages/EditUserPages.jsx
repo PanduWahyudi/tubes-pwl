@@ -1,30 +1,47 @@
 import React from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AdminLayout from "../components/Layouts/AdminLayout";
 import Input from "../components/Elements/Input";
 import { useForm } from "react-hook-form";
 import ActionButton from "../components/Elements/ActionButton";
-import SelectInput from "../components/Elements/SelectInput";
+import SucsessPopUp from "../components/Fragments/SucsessPopUp";
 
-function EditUserPages() {
-  const { register, handleSubmit, reset, formState } = useForm({
-    defaultValues: { name: "", email: "" },
-  });
-
-  const onSubmit = (data) => {
-    console.log(data);
-  };
-  React.useEffect(() => {
-    if (formState.isSubmitSuccessful) {
-      reset({ name: "", email: "" });
-    }
-  }, [formState, reset]);
-
+function EsitUserPages() {
   const opsi = [
     { id: 0, value: "", label: "Pilih Role" },
     { id: 1, value: "admin", label: "Admin" },
     { id: 2, value: "user", label: "User" },
     { id: 3, value: "umum", label: "Umum" },
   ];
+
+  const [isSuccesUpdate, setIsSuccesUpdate] = useState(false);
+
+  const { register, handleSubmit, reset, formState } = useForm({
+    defaultValues: { name: "", email: "", countries: "" },
+  });
+
+  const [selectedOption, setSelectedOption] = useState("");
+
+  const onSubmit = (data) => {
+    console.log("Kategori yang dipilih:", selectedOption);
+    setIsSuccesUpdate(true);
+    console.log(data);
+  };
+
+  React.useEffect(() => {
+    if (formState.isSubmitSuccessful) {
+      reset({ name: "", email: "", countrie: "" });
+    }
+  }, [formState, reset]);
+
+  const navigate = useNavigate();
+
+  const closeSuccesUpdate = () => {
+    setIsSuccesUpdate(false);
+
+    navigate("/pengguna");
+  };
 
   return (
     <AdminLayout titlePage="Edit Pengguna">
@@ -57,6 +74,8 @@ function EditUserPages() {
               <p className="text-[24px] font-normal"> Role</p>
               <select
                 id="countries"
+                {...register("countries")}
+                onChange={(e) => setSelectedOption(e.target.value)}
                 className=" border border-[#8B8B8B] text-gray-900 text-sm rounded-lg focus:outline-none focus:visible focus:ring-[#8B8B8B] focus:border-[#8B8B8B] block w-64 p-2.5 
       mt-2"
               >
@@ -72,10 +91,18 @@ function EditUserPages() {
           <div className="mt-2 flex justify-end">
             <ActionButton teks="Ubah" lebar="px-4 w-30" type="submit" />
           </div>
+
+          {isSuccesUpdate && (
+            <SucsessPopUp
+              onClick={closeSuccesUpdate}
+              type="button"
+              teks="Data Tersimpan"
+            />
+          )}
         </form>
       </div>
     </AdminLayout>
   );
 }
 
-export default EditUserPages;
+export default EsitUserPages;

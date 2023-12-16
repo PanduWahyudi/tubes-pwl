@@ -1,16 +1,21 @@
 import React from "react";
 import AdminLayout from "../components/Layouts/AdminLayout";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import Input from "../components/Elements/Input";
 import { useForm } from "react-hook-form";
 import ActionButton from "../components/Elements/ActionButton";
+import SucsessPopUp from "../components/Fragments/SucsessPopUp";
 
-function EditIncomingGoodsPages() {
+function EditIncomingGoodPages() {
   const { register, handleSubmit, reset, formState } = useForm({
     defaultValues: { item: "", date: "", supplierId: "", qty: 0 },
   });
 
+  const [isSuccesUpdate, setIsSuccesUpdate] = useState(false);
+
   const onSubmit = (data) => {
-    alert(data);
+    setIsSuccesUpdate(true);
     console.log(data);
   };
   React.useEffect(() => {
@@ -18,6 +23,14 @@ function EditIncomingGoodsPages() {
       reset({ item: "", date: "", supplierId: "", qty: 0 });
     }
   }, [formState, reset]);
+
+  const navigate = useNavigate();
+
+  const closeSuccesUpdate = () => {
+    setIsSuccesUpdate(false);
+
+    navigate("/barang-masuk");
+  };
 
   return (
     <AdminLayout titlePage="Edit Barang Masuk">
@@ -34,7 +47,7 @@ function EditIncomingGoodsPages() {
             }}
           />
 
-          <div className="mt-4 flex space-x-4 items-center">
+          <div className="mt-2 flex space-x-4 items-center">
             <div className="flex flex-col space-y-1 ">
               <p className="text-[24px] font-normal">Tanggal Masuk</p>
               <input
@@ -75,9 +88,16 @@ function EditIncomingGoodsPages() {
             <ActionButton teks="Ubah" lebar="px-4 w-30" type="submit" />
           </div>
         </form>
+        {isSuccesUpdate && (
+          <SucsessPopUp
+            onClick={closeSuccesUpdate}
+            type="button"
+            teks="Data Tersimpan"
+          />
+        )}
       </div>
     </AdminLayout>
   );
 }
 
-export default EditIncomingGoodsPages;
+export default EditIncomingGoodPages;

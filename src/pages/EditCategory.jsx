@@ -1,5 +1,8 @@
 import React from "react";
 import AdminLayout from "../components/Layouts/AdminLayout";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import SucsessPopUp from "../components/Fragments/SucsessPopUp";
 import Input from "../components/Elements/Input";
 import { useForm } from "react-hook-form";
 import ActionButton from "../components/Elements/ActionButton";
@@ -9,7 +12,10 @@ function EditCategoryPages() {
     defaultValues: { kategori: "" },
   });
 
+  const [isSuccesUpdate, setIsSuccesUpdate] = useState(false);
+
   const onSubmit = (data) => {
+    setIsSuccesUpdate(true);
     console.log(data);
   };
   React.useEffect(() => {
@@ -17,6 +23,14 @@ function EditCategoryPages() {
       reset({ kategori: "" });
     }
   }, [formState, reset]);
+  const navigate = useNavigate();
+
+  const closeSuccesUpdate = () => {
+    setIsSuccesUpdate(false);
+
+    navigate("/produk/kategori");
+  };
+
   return (
     <AdminLayout titlePage="Edit Kategori">
       <form action="" onSubmit={handleSubmit(onSubmit)}>
@@ -35,6 +49,14 @@ function EditCategoryPages() {
             <ActionButton teks="Ubah" lebar="px-4 w-30" type="submit" />
           </div>
         </div>
+
+        {isSuccesUpdate && (
+          <SucsessPopUp
+            onClick={closeSuccesUpdate}
+            type="button"
+            teks="Data Tersimpan"
+          />
+        )}
       </form>
     </AdminLayout>
   );
