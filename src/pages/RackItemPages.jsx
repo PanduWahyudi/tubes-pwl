@@ -1,8 +1,8 @@
-import React from "react";
 import { useState } from "react";
 import CardAdmin from "../components/Elements/CardAdmin";
 import AdminMenu from "../components/Fragments/AdminMenu";
 import HeaderAdmin from "../components/Fragments/HeaderAdmin";
+import { Pagination } from "flowbite-react";
 import SearchBar from "../components/Elements/SearchBar";
 import { Link } from "react-router-dom";
 import EditButton from "../components/Elements/EditButton";
@@ -11,6 +11,61 @@ import ConfirmationPopUP from "../components/Fragments/ConfirmationPopUp";
 import SucsessPopUp from "../components/Fragments/SucsessPopUp";
 
 function RackItemPages() {
+  const dummy = [
+    {
+      item: "Televisi",
+    },
+    {
+      item: "Televisi 1",
+    },
+    {
+      item: "Televisi 2",
+    },
+    {
+      item: "Televisi 3",
+    },
+    {
+      item: "Televisi 4",
+    },
+    {
+      item: "Televisi 6",
+    },
+    {
+      item: "Televisi 7",
+    },
+    {
+      item: "Televisi 8",
+    },
+    {
+      item: "Televisi 9",
+    },
+    {
+      item: "Televisi 10",
+    },
+    {
+      item: "Televisi 11",
+    },
+    {
+      item: "Televisi 12",
+    },
+  ];
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 4;
+
+  const [search, setSearch] = useState("");
+
+  const filteredItems = dummy.filter((item) =>
+    item.item.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const totalFilteredPages = Math.ceil(filteredItems.length / itemsPerPage);
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedItems = filteredItems.slice(startIndex, endIndex);
+
+  const onPageChange = (page) => setCurrentPage(page);
+
   const [isConfirModalOpen, setIsConfirModalOpen] = useState(false);
   const [isSuccesModalOpen, setIsSuccesModalOpen] = useState(false);
   const [isSuccesUpdate, setIsSuccesUpdate] = useState(false);
@@ -64,10 +119,10 @@ function RackItemPages() {
   };
 
   const opsi = [
-    { id: 0, value: "", label: "Pilih Role" },
-    { id: 1, value: "admin", label: "Admin" },
-    { id: 2, value: "user", label: "User" },
-    { id: 3, value: "umum", label: "Umum" },
+    { id: 0, value: "", label: "Pilih Item" },
+    { id: 1, value: "televisi", label: "Televisi" },
+    { id: 2, value: "blender", label: "Blender" },
+    { id: 3, value: "kulkas", label: "Kulkas" },
   ];
   return (
     <div className="bg-[#E48F45] p-[5px] h-screen">
@@ -109,12 +164,17 @@ function RackItemPages() {
           </div>
           <div className="flex flex-col ">
             <div className="my-2 flex justify-between items-center">
-              <SearchBar style="left-[23%]" />
+              <SearchBar
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                  setCurrentPage(1); // Reset current page when search changes
+                }}
+              />
               <button
                 onClick={openAddItemModal}
-                className="w-[112px] bg-[#6B240C] py-2 text-center text-white rounded-md "
+                className="w-[142px] bg-[#6B240C] py-2 text-center text-white rounded-md "
               >
-                + Buat Rack
+                + Tambah Item
               </button>
             </div>
             <div className=" overflow-x-auto rounded-md mt-4 mb-6 h-96 flex flex-col justify-between">
@@ -134,39 +194,74 @@ function RackItemPages() {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className=" border-b-2 border-white bg-[#F0F0F0]  ">
-                    <td scope="row" className="px-6 py-4 ">
-                      1
-                    </td>
-                    <td className="px-6 py-4">Elektronik</td>
+                  {paginatedItems.map((item, index) => (
+                    <tr
+                      key={index}
+                      className=" border-b-2 border-white bg-[#F0F0F0]  "
+                    >
+                      <td scope="row" className="px-6 py-4 ">
+                        {itemsPerPage * (currentPage - 1) + (index + 1)}
+                      </td>
+                      <td className="px-6 py-4">{item.item}</td>
 
-                    <td className="px-6 py-4 flex space-x-3 justify-center">
-                      <DeleteButton onClick={openConfirModal} />
-                      <EditButton onClick={openEditItemModal} />
-                      {isConfirModalOpen && (
-                        <ConfirmationPopUP
-                          onClick={openConfirModal}
-                          Ok={closeConfirModal}
-                          Cancel={closeModal}
-                          teks=" Anda Yakin Ingin Menghapus Data"
-                          type="button"
-                        />
-                      )}
-                      {isSuccesModalOpen && (
-                        <SucsessPopUp
-                          onClick={closeSuccesModal}
-                          type="button"
-                          teks="Data Sudah Terhapus"
-                        />
-                      )}
-                    </td>
-                  </tr>
+                      <td className="px-6 py-4 flex space-x-3 justify-center">
+                        <DeleteButton onClick={openConfirModal} />
+                        <EditButton onClick={openEditItemModal} />
+                        {isConfirModalOpen && (
+                          <ConfirmationPopUP
+                            onClick={openConfirModal}
+                            Ok={closeConfirModal}
+                            Cancel={closeModal}
+                            teks=" Anda Yakin Ingin Menghapus Data"
+                            type="button"
+                          />
+                        )}
+                        {isSuccesModalOpen && (
+                          <SucsessPopUp
+                            onClick={closeSuccesModal}
+                            type="button"
+                            teks="Data Sudah Terhapus"
+                          />
+                        )}
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
+              <div className="flex justify-center items-center">
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalFilteredPages}
+                  onPageChange={onPageChange}
+                  showIcons
+                  previousLabel=""
+                  nextLabel=""
+                  theme={{
+                    pages: {
+                      base: "xs:mt-0 mt-2 inline-flex gap-x-2 items-center -space-x-px ",
+                      showIcon: "inline-flex",
+                      previous: {
+                        base: "bg-[#E1E1E1] px-3 py-2 rounded-md hover:bg-[#E1E1E1]  ",
+                        icon: "h-6 w-5",
+                      },
+                      next: {
+                        base: "bg-[#E1E1E1] px-3 py-2 rounded-md hover:bg-[#E1E1E1]  ",
+                        icon: "h-6 w-5",
+                      },
+                      selector: {
+                        base: "bg-[#E1E1E1] px-3 py-2 rounded-md w-[35px] ",
+                        active:
+                          "bg-[#A8A196]  hover:bg-[#A8A196]  hover:text-black dark:border-gray-700 text-black",
+                        disabled: "opacity-50 cursor-normal",
+                      },
+                    },
+                  }}
+                />
+              </div>
             </div>
             {/* Modal Add RackItem */}
             {isAddItemModal && (
-              <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-black bg-opacity-50">
+              <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-black bg-opacity-50 z-[99]">
                 <div className="bg-white py-[8px] px-[13px] w-96 rounded-md">
                   <div className="flex justify-between items-center border-b border-black">
                     <p className="text-[24px] font-medium">Tambah Item</p>
@@ -231,7 +326,7 @@ function RackItemPages() {
             {/* Modal Edit RackItem */}
 
             {isEditItemModal && (
-              <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-black bg-opacity-50">
+              <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-black bg-opacity-50 z-[99]">
                 <div className="bg-white py-[8px] px-[13px] w-96 rounded-md">
                   <div className="flex justify-between items-center border-b border-black">
                     <p className="text-[24px] font-medium">Edit Item</p>

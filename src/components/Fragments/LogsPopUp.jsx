@@ -1,8 +1,81 @@
+import { useState } from "react";
 import ClosePopUpLogsButton from "../Elements/ClosePopUpLogsButton";
-import Pagination from "../Elements/Pagination";
+import { Pagination } from "flowbite-react";
 
 // eslint-disable-next-line react/prop-types
-function LogsPopUp({ onClick, pageCount }) {
+function LogsPopUp({ onClick }) {
+  const dummy = [
+    {
+      nama: "Sumanto",
+      waktu: "25/11/2023",
+      item: "Televisi",
+      kategori: "Elektronik",
+    },
+    {
+      nama: "Sumanto 1",
+      waktu: "25/11/2023",
+      item: "Televisi",
+      kategori: "Elektronik",
+    },
+    {
+      nama: "Sumanto 2",
+      waktu: "25/11/2023",
+      item: "Televisi",
+      kategori: "Elektronik",
+    },
+    {
+      nama: "Sumanto 3",
+      waktu: "25/11/2023",
+      item: "Televisi",
+      kategori: "Elektronik",
+    },
+    {
+      nama: "Sumanto 4",
+      waktu: "25/11/2023",
+      item: "Televisi",
+      kategori: "Elektronik",
+    },
+    {
+      nama: "Sumanto 5",
+      waktu: "25/11/2023",
+      item: "Televisi",
+      kategori: "Elektronik",
+    },
+    {
+      nama: "Sumanto 6",
+      waktu: "25/11/2023",
+      item: "Televisi",
+      kategori: "Elektronik",
+    },
+    {
+      nama: "Sumanto 7",
+      waktu: "25/11/2023",
+      item: "Televisi",
+      kategori: "Elektronik",
+    },
+    {
+      nama: "Sumanto 8",
+      waktu: "25/11/2023",
+      item: "Televisi",
+      kategori: "Elektronik",
+    },
+    {
+      nama: "Sumanto 9",
+      waktu: "25/11/2023",
+      item: "Televisi",
+      kategori: "Elektronik",
+    },
+  ];
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+
+  const paginatedItems = dummy.slice(startIndex, endIndex);
+
+  const onPageChange = (page) => setCurrentPage(page);
+
   return (
     <>
       {/* Modal */}
@@ -20,7 +93,7 @@ function LogsPopUp({ onClick, pageCount }) {
           <div className="p-[11px] rounded-md w-auto bg-white flex flex-col justify-between h-[500px]">
             <div className="relative overflow-x-auto rounded-md mt-4 mb-6">
               <table className="w-full text-[18px] text-center rtl:text-right">
-                <thead className="uppercase bg-[#F0F0F0]">
+                <thead className=" bg-[#F0F0F0]">
                   <tr className="border-b-2 border-white">
                     <th scope="col" className="p-[10px] font-medium">
                       No
@@ -40,20 +113,85 @@ function LogsPopUp({ onClick, pageCount }) {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="border-b-2 border-white bg-[#F0F0F0]">
-                    <td scope="row" className="px-6 py-4">
-                      1
-                    </td>
-                    <td className="px-6 py-4">Sumanto</td>
-                    <td className="px-6 py-4">25/11/2023</td>
-                    <td className="px-6 py-4">Televisi</td>
-                    <td className="px-6 py-4">Elektronik</td>
-                  </tr>
+                  {paginatedItems.map((item, index) => (
+                    <tr
+                      key={index}
+                      className="border-b-2 border-white bg-[#F0F0F0]"
+                    >
+                      <td scope="row" className="px-6 py-4">
+                        {index + 1}
+                      </td>
+                      <td className="px-6 py-4">{item.nama}</td>
+                      <td className="px-6 py-4">{item.waktu}</td>
+                      <td className="px-6 py-4">{item.item}</td>
+                      <td className="px-6 py-4">{item.kategori}</td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
 
-            <Pagination pageCount={pageCount} />
+            {/* <Pagination pageCount={pageCount} /> */}
+            {/* <div className="flex justify-center items-center">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={100}
+              onPageChange={onPageChange}
+              showIcons
+              previousLabel=""
+              nextLabel=""
+              theme={{
+                pages: {
+                  base: "xs:mt-0 mt-2 inline-flex gap-x-2 items-center -space-x-px ",
+                  showIcon: "inline-flex",
+                  previous: {
+                    base: "bg-[#E1E1E1] px-3 py-2 rounded-md hover:bg-[#E1E1E1]  ",
+                    icon: "h-6 w-5",
+                  },
+                  next: {
+                    base: "bg-[#E1E1E1] px-3 py-2 rounded-md hover:bg-[#E1E1E1]  ",
+                    icon: "h-6 w-5",
+                  },
+                  selector: {
+                    base: "bg-[#E1E1E1] px-3 py-2 rounded-md ",
+                    active:
+                      "bg-[#E1E1E1]  hover:bg-[#E1E1E1] dark:border-gray-700 text-black",
+                    disabled: "opacity-50 cursor-normal",
+                  },
+                },
+              }}
+            />
+            </div> */}
+            <div className="flex justify-center items-center">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={Math.ceil(dummy.length / itemsPerPage)}
+                onPageChange={onPageChange}
+                showIcons
+                previousLabel=""
+                nextLabel=""
+                theme={{
+                  pages: {
+                    base: "xs:mt-0 mt-2 inline-flex gap-x-2 items-center -space-x-px ",
+                    showIcon: "inline-flex",
+                    previous: {
+                      base: "bg-[#E1E1E1] px-3 py-2 rounded-md hover:bg-[#E1E1E1]  ",
+                      icon: "h-6 w-5",
+                    },
+                    next: {
+                      base: "bg-[#E1E1E1] px-3 py-2 rounded-md hover:bg-[#E1E1E1]  ",
+                      icon: "h-6 w-5",
+                    },
+                    selector: {
+                      base: "bg-[#E1E1E1] px-3 py-2 rounded-md ",
+                      active:
+                        "bg-[#A8A196]  hover:bg-[#A8A196]  hover:text-black dark:border-gray-700 text-black",
+                      disabled: "opacity-50 cursor-normal",
+                    },
+                  },
+                }}
+              />
+            </div>
           </div>
         </div>
       </div>
