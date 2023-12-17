@@ -164,7 +164,7 @@ function UserPages() {
 
                   <td className="px-6 py-4 flex space-x-3 justify-center">
                     <DeleteButton onClick={openConfirModal} />
-                    <Link to={"/pengguna/edit-pengguna/" + item.id}>
+                    <Link to={"/pengguna/edit-pengguna" }>
                       <EditButton />
                     </Link>
                     {isConfirModalOpen && (

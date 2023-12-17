@@ -142,7 +142,7 @@ function CategoryPages() {
 
                   <td className="px-6 py-4 flex space-x-3 justify-center">
                     <DeleteButton onClick={openConfirModal} />
-                    <Link to={"/produk/kategori/edit-kategori/" + item.id}>
+                    <Link to={"/produk/kategori/edit-kategori" }>
                       <EditButton />
                     </Link>
                     {isConfirModalOpen && (

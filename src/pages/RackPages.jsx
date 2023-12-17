@@ -141,9 +141,9 @@ function RackPages() {
                   <td className="px-6 py-4">{item.rack}</td>
 
                   <td className="px-6 py-4 flex space-x-3 justify-center">
-                    <RackButton id={item.id} />
+                    <RackButton to="/rack/item-rack" />
                     <DeleteButton onClick={openConfirModal} />
-                    <Link to={"/rack/edit-rack/" + item.id}>
+                    <Link to={"/rack/edit-rack"}>
                       <EditButton />
                     </Link>
                     {isConfirModalOpen && (

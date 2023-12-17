@@ -173,7 +173,7 @@ function ExitItemPages() {
 
                   <td className="px-6 py-4 flex space-x-3 justify-center">
                     <DeleteButton onClick={openConfirModal} />
-                    <Link to={"/barang-keluar/edit-barang-keluar/" + item.id}>
+                    <Link to={"/barang-keluar/edit-barang-keluar"}>
                       <EditButton />
                     </Link>
                     {isConfirModalOpen && (

@@ -130,7 +130,7 @@ function RolePages() {
 
                   <td className="px-6 py-4 flex space-x-3 justify-center">
                     <DeleteButton onClick={openConfirModal} />
-                    <Link to={"/role/edit-role/" + item.id}>
+                    <Link to={"/role/edit-role"}>
                       <EditButton />
                     </Link>
                     {isConfirModalOpen && (

@@ -2,10 +2,10 @@ import NameRackIcon from "./Icon/NameRackIcon";
 import { Link } from "react-router-dom";
 
 // eslint-disable-next-line react/prop-types
-function RackButton({ id }) {
+function RackButton({ to }) {
   return (
     <Link
-      to={"/rack/item-rack/" + id}
+      to={to}
       className="flex justify-center items-center bg-[#E48F45] rounded-md p-[3px]"
     >
       <NameRackIcon />

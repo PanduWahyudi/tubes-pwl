@@ -158,7 +158,7 @@ function ItemPages() {
                   <td className="px-6 py-4">{item.kategori}</td>
                   <td className="px-6 py-4 flex space-x-3 justify-center">
                     <DeleteButton onClick={openConfirModal} />
-                    <Link to={"/item/edit-produk/" + item.id}>
+                    <Link to={"/produk/item/edit-produk"}>
                       <EditButton />
                     </Link>
 

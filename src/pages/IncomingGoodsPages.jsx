@@ -173,7 +173,7 @@ function IncomingGoodsPages() {
 
                   <td className="px-6 py-4 flex space-x-3 justify-center">
                     <DeleteButton onClick={openConfirModal} />
-                    <Link to={"/barang-masuk/edit-barang-masuk/" + item.id}>
+                    <Link to={"/barang-masuk/edit-barang-masuk" }>
                       <EditButton />
                     </Link>
                     {isConfirModalOpen && (

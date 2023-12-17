@@ -36,7 +36,7 @@ function MenuList() {
           className={`ml-8 hover:bg-white hover:shadow-md hover:rounded w-full py-1 ${
             location.pathname.startsWith("/item") ||
             location.pathname === "/produk/item/tambah-produk" ||
-            location.pathname === "/item/edit-produk"
+            location.pathname === "/produk/item/edit-produk"
               ? "bg-white shadow-md rounded w-full py-1 ml-8"
               : ""
           }`}
