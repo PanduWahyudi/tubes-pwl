@@ -63,7 +63,6 @@ function CategoryPages() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
 
-
   const [isConfirModalOpen, setIsConfirModalOpen] = useState(false);
   const [isSuccesModalOpen, setIsSuccesModalOpen] = useState(false);
   const [search, setSearch] = useState("");

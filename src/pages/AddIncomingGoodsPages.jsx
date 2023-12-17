@@ -53,9 +53,7 @@ function AddIncomingGoodsPages() {
               <input
                 className="border border-[#8B8B8B] text-gray-900 text-md rounded-lg  focus:border-[#8B8B8B] focus:ring-[#8B8B8B] block w-40  red-500  focus:outline-none  "
                 type="date"
-                {...register("date", {
-                  valueAsDate: true,
-                })}
+                {...register("date")}
               />
             </div>
 

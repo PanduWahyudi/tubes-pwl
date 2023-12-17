@@ -47,10 +47,7 @@ const App = () => {
           path="/produk/item/tambah-produk"
           element={<CreateItemPages />}
         />
-        <Route
-          path="/produk/item/edit-produk/:id"
-          element={<EditItemPages />}
-        />
+        <Route path="/item/edit-produk/:id" element={<EditItemPages />} />
         <Route path="/produk/kategori" element={<CategoryPages />} />
         <Route
           path="/produk/kategori/tambah-kategori"

@@ -49,13 +49,11 @@ function AddExitItemPages() {
 
           <div className="mt-2 flex space-x-4 items-center">
             <div className="flex flex-col space-y-1 ">
-              <p className="text-[24px] font-normal">Tanggal Masuk</p>
+              <p className="text-[24px] font-normal">Tanggal Keluar</p>
               <input
                 className="border border-[#8B8B8B] text-gray-900 text-md rounded-lg  focus:border-[#8B8B8B] focus:ring-[#8B8B8B] block w-40  red-500  focus:outline-none  "
                 type="date"
-                {...register("date", {
-                  valueAsDate: true,
-                })}
+                {...register("date")}
               />
             </div>
 

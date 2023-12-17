@@ -17,7 +17,7 @@ function MenuList() {
     <div className="px-0">
       <ul>
         <li
-          className={` hover:bg-white hover:shadow-md hover:rounded w-full py-1 ${
+          className={` hover:bg-white hover:shadow-md hover:rounded w-full py-1  ${
             location.pathname.startsWith("/item") ||
             location.pathname === "/produk/item/tambah-produk" ||
             location.pathname === "/produk/item/edit-produk" ||
@@ -36,7 +36,7 @@ function MenuList() {
           className={`ml-8 hover:bg-white hover:shadow-md hover:rounded w-full py-1 ${
             location.pathname.startsWith("/item") ||
             location.pathname === "/produk/item/tambah-produk" ||
-            location.pathname === "/produk/item/edit-produk"
+            location.pathname === "/item/edit-produk"
               ? "bg-white shadow-md rounded w-full py-1 ml-8"
               : ""
           }`}
@@ -48,8 +48,8 @@ function MenuList() {
         <li
           className={`ml-8 hover:bg-white hover:shadow-md hover:rounded w-full py-1 ${
             location.pathname.startsWith("/produk/kategori") ||
-            location.pathname === "/produk/tambah-kategori" ||
-            location.pathname === "/produk/edit-kategori"
+            location.pathname === "/produk/kategori/tambah-kategori" ||
+            location.pathname === "/produk/kategori/edit-kategori"
               ? "bg-white shadow-md rounded w-full py-1 ml-8"
               : ""
           }`}
