@@ -2,7 +2,7 @@
 import { useState } from "react";
 import AdminLayout from "../components/Layouts/AdminLayout";
 import SearchBar from "../components/Elements/SearchBar";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import EditButton from "../components/Elements/EditButton";
 import DeleteButton from "../components/Elements/DeleteButton";
 // import Pagination from "../components/Elements/Pagination";
@@ -13,18 +13,22 @@ import SucsessPopUp from "../components/Fragments/SucsessPopUp";
 function ItemPages() {
   const dummy = [
     {
+      id: 1,
       nama: "Telvisi",
       kategori: "Elektronik",
     },
     {
+      id: 2,
       nama: "Telvisi",
       kategori: "Elektronik",
     },
     {
+      id: 3,
       nama: "Televisi",
       kategori: "Elektronik",
     },
     {
+      id: 4,
       nama: "Televisi 1",
       kategori: "Elektronik",
     },
@@ -33,6 +37,7 @@ function ItemPages() {
       kategori: "Elektronik",
     },
     {
+      id: 5,
       nama: "Televisi 3",
       kategori: "Elektronik",
     },
@@ -41,10 +46,12 @@ function ItemPages() {
       kategori: "Elektronik",
     },
     {
+      id: 6,
       nama: "Televisi 5",
       kategori: "Elektronik",
     },
     {
+      id: 7,
       nama: "Televisi 6",
       kategori: "Elektronik",
     },
@@ -53,10 +60,12 @@ function ItemPages() {
       kategori: "Elektronik",
     },
     {
+      id: 8,
       nama: "Televisi 8",
       kategori: "Elektronik",
     },
     {
+      id: 9,
       nama: "Televisi 9",
       kategori: "Elektronik",
     },
@@ -65,7 +74,6 @@ function ItemPages() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
 
-  const navigate = useNavigate();
   const [isConfirModalOpen, setIsConfirModalOpen] = useState(false);
   const [isSuccesModalOpen, setIsSuccesModalOpen] = useState(false);
   const [search, setSearch] = useState("");
@@ -150,9 +158,10 @@ function ItemPages() {
                   <td className="px-6 py-4">{item.kategori}</td>
                   <td className="px-6 py-4 flex space-x-3 justify-center">
                     <DeleteButton onClick={openConfirModal} />
-                    <EditButton
-                      onClick={() => navigate("/produk/item/edit-produk")}
-                    />
+                    <Link to={"/produk/item/edit-produk/" + item.id}>
+                      <EditButton />
+                    </Link>
+
                     {isConfirModalOpen && (
                       <ConfirmationPopUP
                         onClick={openConfirModal}

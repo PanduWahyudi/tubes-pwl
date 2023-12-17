@@ -47,14 +47,17 @@ const App = () => {
           path="/produk/item/tambah-produk"
           element={<CreateItemPages />}
         />
-        <Route path="/produk/item/edit-produk" element={<EditItemPages />} />
+        <Route
+          path="/produk/item/edit-produk/:id"
+          element={<EditItemPages />}
+        />
         <Route path="/produk/kategori" element={<CategoryPages />} />
         <Route
           path="/produk/kategori/tambah-kategori"
           element={<AddCategoryPages />}
         />
         <Route
-          path="/produk/kategori/edit-kategori"
+          path="/produk/kategori/edit-kategori/:id"
           element={<EditCategoryPages />}
         />
         <Route path="/barang-masuk" element={<IncomingGoodsPages />} />
@@ -63,7 +66,7 @@ const App = () => {
           element={<AddIncomingGoodsPages />}
         />
         <Route
-          path="/barang-masuk/edit-barang-masuk"
+          path="/barang-masuk/edit-barang-masuk/:id"
           element={<EditIncomingGoodPages />}
         />
         <Route path="/barang-keluar" element={<ExitItemPages />} />
@@ -72,19 +75,19 @@ const App = () => {
           element={<AddExitItemPages />}
         />
         <Route
-          path="/barang-keluar/edit-barang-keluar"
+          path="/barang-keluar/edit-barang-keluar/:id"
           element={<EditExitItemPages />}
         />
         <Route path="/rack" element={<RackPages />} />
         <Route path="/rack/tambah-rack" element={<AddRackPages />} />
-        <Route path="/rack/edit-rack" element={<EditRackPages />} />
-        <Route path="/rack/item-rack" element={<RackItemPages />} />
+        <Route path="/rack/edit-rack/:id" element={<EditRackPages />} />
+        <Route path="/rack/item-rack/:id" element={<RackItemPages />} />
         <Route path="/pengguna" element={<User />} />
         <Route path="/pengguna/tambah-pengguna" element={<AddUserPages />} />
-        <Route path="/pengguna/edit-pengguna" element={<EditUserPages />} />
+        <Route path="/pengguna/edit-pengguna/:id" element={<EditUserPages />} />
         <Route path="/role" element={<RolePages />} />
         <Route path="/role/tambah-role" element={<AddRolePages />} />
-        <Route path="/role/edit-role" element={<EditRolePages />} />
+        <Route path="/role/edit-role/:id" element={<EditRolePages />} />
       </Routes>
     </Router>
   );

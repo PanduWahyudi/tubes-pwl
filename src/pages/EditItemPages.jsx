@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import AdminLayout from "../components/Layouts/AdminLayout";
 import { useForm } from "react-hook-form";
 import ActionButton from "../components/Elements/ActionButton";
@@ -8,6 +8,7 @@ import Input from "../components/Elements/Input";
 import SucsessPopUp from "../components/Fragments/SucsessPopUp";
 
 function EditItemPages() {
+  const { id } = useParams();
   const opsi = [
     { id: 0, value: "", label: "Pilih Kategori" },
     { id: 1, value: "elektronik", label: "Elektronik" },

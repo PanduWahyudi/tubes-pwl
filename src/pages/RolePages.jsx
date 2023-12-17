@@ -2,7 +2,7 @@ import { useState } from "react";
 import AdminLayout from "../components/Layouts/AdminLayout";
 import SearchBar from "../components/Elements/SearchBar";
 import EditButton from "../components/Elements/EditButton";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import DeleteButton from "../components/Elements/DeleteButton";
 import ConfirmationPopUP from "../components/Fragments/ConfirmationPopUp";
 import SucsessPopUp from "../components/Fragments/SucsessPopUp";
@@ -11,37 +11,45 @@ import { Pagination } from "flowbite-react";
 function RolePages() {
   const dummy = [
     {
+      id: 1,
       role: "Admin",
     },
     {
+      id: 2,
       role: "User ",
     },
     {
+      id: 3,
       role: "User ",
     },
     {
+      id: 4,
       role: "Admin ",
     },
     {
+      id: 5,
       role: "Admin ",
     },
     {
+      id: 6,
       role: "Admin ",
     },
     {
+      id: 7,
       role: "Admin ",
     },
     {
+      id: 8,
       role: "User ",
     },
     {
+      id: 9,
       role: "User ",
     },
   ];
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
 
-  const navigate = useNavigate();
   const [isConfirModalOpen, setIsConfirModalOpen] = useState(false);
   const [isSuccesModalOpen, setIsSuccesModalOpen] = useState(false);
   const [search, setSearch] = useState("");
@@ -122,7 +130,9 @@ function RolePages() {
 
                   <td className="px-6 py-4 flex space-x-3 justify-center">
                     <DeleteButton onClick={openConfirModal} />
-                    <EditButton onClick={() => navigate("/role/edit-role")} />
+                    <Link to={"/role/edit-role/" + item.id}>
+                      <EditButton />
+                    </Link>
                     {isConfirModalOpen && (
                       <ConfirmationPopUP
                         onClick={openConfirModal}

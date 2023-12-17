@@ -2,7 +2,7 @@ import { useState } from "react";
 import AdminLayout from "../components/Layouts/AdminLayout";
 import SearchBar from "../components/Elements/SearchBar";
 import { Pagination } from "flowbite-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import EditButton from "../components/Elements/EditButton";
 import DeleteButton from "../components/Elements/DeleteButton";
 import ConfirmationPopUP from "../components/Fragments/ConfirmationPopUp";
@@ -12,46 +12,57 @@ import RackButton from "../components/Elements/RackButton";
 function RackPages() {
   const dummy = [
     {
+      id: 1,
       rack: "Elektronik",
     },
     {
+      id: 2,
       rack: "Elektronik 1",
     },
     {
+      id: 3,
       rack: "Elektronik 2",
     },
     {
+      id: 4,
       rack: "Elektronik 3",
     },
     {
+      id: 5,
       rack: "Elektronik 4",
     },
     {
+      id: 6,
       rack: "Elektronik 6",
     },
     {
+      id: 7,
       rack: "Elektronik 7",
     },
     {
+      id: 8,
       rack: "Elektronik 8",
     },
     {
+      id: 9,
       rack: "Elektronik 9",
     },
     {
+      id: 10,
       rack: "Elektronik 10",
     },
     {
+      id: 11,
       rack: "Elektronik 11",
     },
     {
+      id: 12,
       rack: "Elektronik 12",
     },
   ];
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
 
-  const navigate = useNavigate();
   const [isConfirModalOpen, setIsConfirModalOpen] = useState(false);
   const [isSuccesModalOpen, setIsSuccesModalOpen] = useState(false);
   const [search, setSearch] = useState("");
@@ -130,9 +141,11 @@ function RackPages() {
                   <td className="px-6 py-4">{item.rack}</td>
 
                   <td className="px-6 py-4 flex space-x-3 justify-center">
-                    <RackButton />
+                    <RackButton id={item.id} />
                     <DeleteButton onClick={openConfirModal} />
-                    <EditButton onClick={() => navigate("/rack/edit-rack")} />
+                    <Link to={"/rack/edit-rack/" + item.id}>
+                      <EditButton />
+                    </Link>
                     {isConfirModalOpen && (
                       <ConfirmationPopUP
                         onClick={openConfirModal}

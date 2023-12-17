@@ -2,7 +2,7 @@ import { useState } from "react";
 import AdminLayout from "../components/Layouts/AdminLayout";
 import SearchBar from "../components/Elements/SearchBar";
 import { Pagination } from "flowbite-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import EditButton from "../components/Elements/EditButton";
 import DeleteButton from "../components/Elements/DeleteButton";
 import ConfirmationPopUP from "../components/Fragments/ConfirmationPopUp";
@@ -11,26 +11,31 @@ import SucsessPopUp from "../components/Fragments/SucsessPopUp";
 function UserPages() {
   const dummy = [
     {
+      id: 1,
       nama: "Sumanto",
       email: "sumanto@example.com",
       role: "Admin",
     },
     {
+      id: 2,
       nama: "Sumanto 1",
       email: "sumanto@example.com",
       role: "Admin",
     },
     {
+      id: 3,
       nama: "Sumanto 2",
       email: "sumanto@example.com",
       role: "Admin",
     },
     {
+      id: 4,
       nama: "Sumanto 3",
       email: "sumanto@example.com",
       role: "Admin",
     },
     {
+      id: 5,
       nama: "Sumanto 4",
       email: "sumanto@example.com",
       role: "Admin",
@@ -41,21 +46,25 @@ function UserPages() {
       role: "Admin",
     },
     {
+      id: 6,
       nama: "Sumanto 6",
       email: "sumanto@example.com",
       role: "Admin",
     },
     {
+      id: 7,
       nama: "Sumanto 7",
       email: "sumanto@example.com",
       role: "Admin",
     },
     {
+      id: 8,
       nama: "Sumanto 8",
       email: "sumanto@example.com",
       role: "Admin",
     },
     {
+      id: 9,
       nama: "Sumanto 9",
       email: "sumanto@example.com",
       role: "Admin",
@@ -65,7 +74,6 @@ function UserPages() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
 
-  const navigate = useNavigate();
   const [isConfirModalOpen, setIsConfirModalOpen] = useState(false);
   const [isSuccesModalOpen, setIsSuccesModalOpen] = useState(false);
   const [search, setSearch] = useState("");
@@ -156,9 +164,9 @@ function UserPages() {
 
                   <td className="px-6 py-4 flex space-x-3 justify-center">
                     <DeleteButton onClick={openConfirModal} />
-                    <EditButton
-                      onClick={() => navigate("/pengguna/edit-pengguna")}
-                    />
+                    <Link to={"/pengguna/edit-pengguna/" + item.id}>
+                      <EditButton />
+                    </Link>
                     {isConfirModalOpen && (
                       <ConfirmationPopUP
                         onClick={openConfirModal}
