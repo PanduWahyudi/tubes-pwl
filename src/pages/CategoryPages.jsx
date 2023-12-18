@@ -11,7 +11,6 @@ import { axiosInstance } from "../utils/AxiosInstance";
 import useSWR, { mutate } from "swr";
 
 function CategoryPages() {
-
   let dataKategori = [];
 
   const { data } = useSWR(`/api/v1/kategori`, (url) =>
@@ -76,7 +75,7 @@ function CategoryPages() {
     mutate("/api/v1/kategori");
     setIsConfirModalOpen(false);
     setIsSuccesModalOpen(true);
-  }
+  };
 
   return (
     <AdminLayout titlePage="Kategori">
@@ -122,11 +121,17 @@ function CategoryPages() {
                   </td>
                   <td className="px-6 py-4">{item.kategori}</td>
                   <td className="px-6 py-4 flex space-x-3 justify-center">
-                    <DeleteButton onClick={()=>openConfirModal(item.id)} />
-                    <EditButton onClick={()=>navigate("/produk/kategori/edit-kategori",{state:{id:item.id, name:item.kategori}})} />
+                    <DeleteButton onClick={() => openConfirModal(item.id)} />
+                    <EditButton
+                      onClick={() =>
+                        navigate("/produk/kategori/edit-kategori", {
+                          state: { id: item.id, name: item.kategori },
+                        })
+                      }
+                    />
                     {isConfirModalOpen && (
                       <ConfirmationPopUP
-                        Ok={()=>handleDelete()}
+                        Ok={() => handleDelete()}
                         Cancel={closeModal}
                         teks=" Anda Yakin Ingin Menghapus Data"
                         type="button"
@@ -145,34 +150,36 @@ function CategoryPages() {
             </tbody>
           </table>
           <div className="flex justify-center items-center">
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalFilteredPages}
-              onPageChange={onPageChange}
-              showIcons
-              previousLabel=""
-              nextLabel=""
-              theme={{
-                pages: {
-                  base: "xs:mt-0 mt-2 inline-flex gap-x-2 items-center -space-x-px ",
-                  showIcon: "inline-flex",
-                  previous: {
-                    base: "bg-[#E1E1E1] px-3 py-2 rounded-md hover:bg-[#E1E1E1]  ",
-                    icon: "h-6 w-5",
+            {totalFilteredPages > 1 && (
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalFilteredPages}
+                onPageChange={onPageChange}
+                showIcons
+                previousLabel=""
+                nextLabel=""
+                theme={{
+                  pages: {
+                    base: "xs:mt-0 mt-2 inline-flex gap-x-2 items-center -space-x-px ",
+                    showIcon: "inline-flex",
+                    previous: {
+                      base: "bg-[#E1E1E1] px-3 py-2 rounded-md hover:bg-[#E1E1E1]  ",
+                      icon: "h-6 w-5",
+                    },
+                    next: {
+                      base: "bg-[#E1E1E1] px-3 py-2 rounded-md hover:bg-[#E1E1E1]  ",
+                      icon: "h-6 w-5",
+                    },
+                    selector: {
+                      base: "bg-[#E1E1E1] px-3 py-2 rounded-md w-[35px] ",
+                      active:
+                        "bg-[#A8A196]  hover:bg-[#A8A196]  hover:text-black dark:border-gray-700 text-black",
+                      disabled: "opacity-50 cursor-normal",
+                    },
                   },
-                  next: {
-                    base: "bg-[#E1E1E1] px-3 py-2 rounded-md hover:bg-[#E1E1E1]  ",
-                    icon: "h-6 w-5",
-                  },
-                  selector: {
-                    base: "bg-[#E1E1E1] px-3 py-2 rounded-md w-[35px] ",
-                    active:
-                      "bg-[#A8A196]  hover:bg-[#A8A196]  hover:text-black dark:border-gray-700 text-black",
-                    disabled: "opacity-50 cursor-normal",
-                  },
-                },
-              }}
-            />
+                }}
+              />
+            )}
           </div>
         </div>
       </div>

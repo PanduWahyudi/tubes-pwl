@@ -9,11 +9,13 @@ import SucsessPopUp from "../components/Fragments/SucsessPopUp";
 import { axiosInstance } from "../utils/AxiosInstance";
 
 function EditExitItem() {
+  const {state} = useLocation();
+  console.log(state);
+
   const { register, handleSubmit, reset, formState } = useForm({
-    defaultValues: { item: "", tanggalKeluar: "", supplierID: "", qty: 0 },
+    defaultValues: { item: state.item, tanggalKeluar: state.tanggalKeluar, supplierID: state.supplierID, qty: state.qty, },
   });
 
-  const {state} = useLocation();
   const [isSuccesUpdate, setIsSuccesUpdate] = useState(false);
 
   const onSubmit = async (data) => {

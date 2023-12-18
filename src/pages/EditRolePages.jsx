@@ -12,7 +12,7 @@ function EditRolePages() {
   const { state } = useLocation();
 
   const { register, handleSubmit, reset, formState } = useForm({
-    defaultValues: { name: "" },
+    defaultValues: { name: state.name },
   });
 
   const [isSuccesUpdate, setIsSuccesUpdate] = useState(false);

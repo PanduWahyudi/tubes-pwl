@@ -9,12 +9,12 @@ import ActionButton from "../components/Elements/ActionButton";
 import { axiosInstance } from "../utils/AxiosInstance";
 
 function EditCategoryPages() {
+  const {state} = useLocation();
   const { register, handleSubmit, reset, formState } = useForm({
-    defaultValues: { kategori: "" },
+    defaultValues: { kategori: state.name },
   });
 
   const [isSuccesUpdate, setIsSuccesUpdate] = useState(false);
-  const {state} = useLocation();
 
   const onSubmit = async (data) => {
     let dataUpdate = {
@@ -41,6 +41,8 @@ function EditCategoryPages() {
     navigate("/produk/kategori");
   };
 
+  const [initName, setInitName] = useState(state.name)
+
   return (
     <AdminLayout titlePage="Edit Kategori">
       <form action="" onSubmit={handleSubmit(onSubmit)}>
@@ -48,10 +50,13 @@ function EditCategoryPages() {
           <Input
             type="text"
             label="Nama Kategori"
+            value={initName}
             placeholder="Nama Kategori"
             propsRegis={{
               ...register("kategori", {
-                required: "Please enter your item",
+                required: "Please enter your item", onChange: (e) => {
+                  setInitName(e.target.value)
+                }
               }),
             }}
           />

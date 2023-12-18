@@ -32,7 +32,7 @@ function RackItemPages() {
       .then((res) => res.data)
   );
 
-  const { data:dataItem } = useSWR(`/api/v1/item`, (url) =>
+  const { data: dataItem } = useSWR(`/api/v1/item`, (url) =>
     axiosInstance
       .get(url, {
         headers: {
@@ -44,7 +44,7 @@ function RackItemPages() {
 
   dataItem?.map((item) => {
     opsi.push(item);
-  })
+  });
 
   data?.map((item) => {
     dataRackItem.push(item);
@@ -55,22 +55,28 @@ function RackItemPages() {
     defaultValues: { itemId: "" },
   });
 
-  const { register: registerEdit, handleSubmit: handleSubmitEdit, reset: resetEdit, formState: formStateEdit } = useForm({
+  const {
+    register: registerEdit,
+    handleSubmit: handleSubmitEdit,
+    reset: resetEdit,
+    formState: formStateEdit,
+  } = useForm({
     defaultValues: { itemId: "" },
   });
   const [selectedOption, setSelectedOption] = useState("");
 
   const onSubmit = async (data) => {
     let dataCreate = {
-      itemId : parseInt(data.itemId),
-      rackId : state.id,
-    }
+      itemId: parseInt(data.itemId),
+      rackId: state.id,
+    };
     await axiosInstance.post("/api/v1/RITEM", dataCreate, {
       headers: {
         "ngrok-skip-browser-warning": "69420",
       },
-    })
+    });
     mutate(`/api/v1/getItemByRackId?rackId=${state.id}`);
+    reset({ itemId: "" });
     setIsAddItemModal(false);
     setIsEditItemModal(false);
     setIsSuccesUpdate(true);
@@ -78,15 +84,16 @@ function RackItemPages() {
 
   const onSubmitEdit = async (data) => {
     let dataCreate = {
-      id : targetId,
-      itemId : parseInt(data.itemId),
-      rackId : state.id,
-    }
+      id: targetId,
+      itemId: parseInt(data.itemId),
+      rackId: state.id,
+    };
     await axiosInstance.put("/api/v1/RITEM", dataCreate, {
       headers: {
         "ngrok-skip-browser-warning": "69420",
       },
-    })
+    });
+    resetEdit({ itemId: "" });
     mutate(`/api/v1/getItemByRackId?rackId=${state.id}`);
     setIsAddItemModal(false);
     setIsEditItemModal(false);
@@ -138,7 +145,7 @@ function RackItemPages() {
     setIsEditItemModal(false);
   };
 
-  const openEditItemModal = (id) => {
+  const openEditItemModal = (id, kategoriID) => {
     setTargetId(id);
     setIsEditItemModal(true);
   };
@@ -255,7 +262,11 @@ function RackItemPages() {
                         <DeleteButton
                           onClick={() => openConfirModal(item.id)}
                         />
-                        <EditButton onClick={()=>openEditItemModal(item.id)} />
+                        <EditButton
+                          onClick={() =>
+                            openEditItemModal(item.id, item.item.kategoriId)
+                          }
+                        />
                         {isConfirModalOpen && (
                           <ConfirmationPopUP
                             Ok={() => handleDelete()}
@@ -277,34 +288,36 @@ function RackItemPages() {
                 </tbody>
               </table>
               <div className="flex justify-center items-center">
-                <Pagination
-                  currentPage={currentPage}
-                  totalPages={totalFilteredPages}
-                  onPageChange={onPageChange}
-                  showIcons
-                  previousLabel=""
-                  nextLabel=""
-                  theme={{
-                    pages: {
-                      base: "xs:mt-0 mt-2 inline-flex gap-x-2 items-center -space-x-px ",
-                      showIcon: "inline-flex",
-                      previous: {
-                        base: "bg-[#E1E1E1] px-3 py-2 rounded-md hover:bg-[#E1E1E1]  ",
-                        icon: "h-6 w-5",
+                {totalFilteredPages > 1 && (
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalFilteredPages}
+                    onPageChange={onPageChange}
+                    showIcons
+                    previousLabel=""
+                    nextLabel=""
+                    theme={{
+                      pages: {
+                        base: "xs:mt-0 mt-2 inline-flex gap-x-2 items-center -space-x-px ",
+                        showIcon: "inline-flex",
+                        previous: {
+                          base: "bg-[#E1E1E1] px-3 py-2 rounded-md hover:bg-[#E1E1E1]  ",
+                          icon: "h-6 w-5",
+                        },
+                        next: {
+                          base: "bg-[#E1E1E1] px-3 py-2 rounded-md hover:bg-[#E1E1E1]  ",
+                          icon: "h-6 w-5",
+                        },
+                        selector: {
+                          base: "bg-[#E1E1E1] px-3 py-2 rounded-md w-[35px] ",
+                          active:
+                            "bg-[#A8A196]  hover:bg-[#A8A196]  hover:text-black dark:border-gray-700 text-black",
+                          disabled: "opacity-50 cursor-normal",
+                        },
                       },
-                      next: {
-                        base: "bg-[#E1E1E1] px-3 py-2 rounded-md hover:bg-[#E1E1E1]  ",
-                        icon: "h-6 w-5",
-                      },
-                      selector: {
-                        base: "bg-[#E1E1E1] px-3 py-2 rounded-md w-[35px] ",
-                        active:
-                          "bg-[#A8A196]  hover:bg-[#A8A196]  hover:text-black dark:border-gray-700 text-black",
-                        disabled: "opacity-50 cursor-normal",
-                      },
-                    },
-                  }}
-                />
+                    }}
+                  />
+                )}
               </div>
             </div>
             {/* Modal Add RackItem */}

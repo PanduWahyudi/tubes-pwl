@@ -9,12 +9,12 @@ import SucsessPopUp from "../components/Fragments/SucsessPopUp";
 import { axiosInstance } from "../utils/AxiosInstance";
 
 function EditIncomingGoodPages() {
+  const { state } = useLocation();
   const { register, handleSubmit, reset, formState } = useForm({
-    defaultValues: { item: "", tanggalMasuk: "", supplierID: "", qty: 0 },
+    defaultValues: { item: state.item, tanggalMasuk: state.tanggalMasuk, supplierID: state.supplierID, qty: state.qty },
   });
 
   const [isSuccesUpdate, setIsSuccesUpdate] = useState(false);
-  const { state } = useLocation();
 
   const onSubmit = async (data) => {
     let dataUpdate = {

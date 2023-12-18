@@ -70,7 +70,7 @@ function UserPages() {
     setIsConfirModalOpen(false);
   };
 
-  const handleDelete = () =>{
+  const handleDelete = () => {
     axiosInstance.delete(`/api/v1/user/?id=${targetId}`, {
       headers: {
         "ngrok-skip-browser-warning": "69420",
@@ -79,7 +79,7 @@ function UserPages() {
     mutate("/api/v1/user");
     closeModal();
     setIsSuccesModalOpen(true);
-  }
+  };
 
   return (
     <AdminLayout titlePage="Pengguna">
@@ -133,7 +133,7 @@ function UserPages() {
                   <td className="px-6 py-4">{item.email}</td>
                   <td className="px-6 py-4">{item.role.name}</td>
                   <td className="px-6 py-4 flex space-x-3 justify-center">
-                    <DeleteButton onClick={()=>openConfirModal(item.id)} />
+                    <DeleteButton onClick={() => openConfirModal(item.id)} />
                     {/* <Link to={"/pengguna/edit-pengguna" }> */}
                     <EditButton
                       onClick={() =>
@@ -141,6 +141,7 @@ function UserPages() {
                           state: {
                             id: item.id,
                             name: item.name,
+                            email: item.email,
                             role: item.role,
                           },
                         })
@@ -149,7 +150,7 @@ function UserPages() {
                     {/* </Link> */}
                     {isConfirModalOpen && (
                       <ConfirmationPopUP
-                        Ok={()=>handleDelete()}
+                        Ok={() => handleDelete()}
                         Cancel={closeModal}
                         teks=" Anda Yakin Ingin Menghapus Data"
                         type="button"
@@ -168,34 +169,36 @@ function UserPages() {
             </tbody>
           </table>
           <div className="flex justify-center items-center">
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalFilteredPages}
-              onPageChange={onPageChange}
-              showIcons
-              previousLabel=""
-              nextLabel=""
-              theme={{
-                pages: {
-                  base: "xs:mt-0 mt-2 inline-flex gap-x-2 items-center -space-x-px ",
-                  showIcon: "inline-flex",
-                  previous: {
-                    base: "bg-[#E1E1E1] px-3 py-2 rounded-md hover:bg-[#E1E1E1]  ",
-                    icon: "h-6 w-5",
+            {totalFilteredPages > 1 && (
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalFilteredPages}
+                onPageChange={onPageChange}
+                showIcons
+                previousLabel=""
+                nextLabel=""
+                theme={{
+                  pages: {
+                    base: "xs:mt-0 mt-2 inline-flex gap-x-2 items-center -space-x-px ",
+                    showIcon: "inline-flex",
+                    previous: {
+                      base: "bg-[#E1E1E1] px-3 py-2 rounded-md hover:bg-[#E1E1E1]  ",
+                      icon: "h-6 w-5",
+                    },
+                    next: {
+                      base: "bg-[#E1E1E1] px-3 py-2 rounded-md hover:bg-[#E1E1E1]  ",
+                      icon: "h-6 w-5",
+                    },
+                    selector: {
+                      base: "bg-[#E1E1E1] px-3 py-2 rounded-md w-[35px] ",
+                      active:
+                        "bg-[#A8A196]  hover:bg-[#A8A196]  hover:text-black dark:border-gray-700 text-black",
+                      disabled: "opacity-50 cursor-normal",
+                    },
                   },
-                  next: {
-                    base: "bg-[#E1E1E1] px-3 py-2 rounded-md hover:bg-[#E1E1E1]  ",
-                    icon: "h-6 w-5",
-                  },
-                  selector: {
-                    base: "bg-[#E1E1E1] px-3 py-2 rounded-md w-[35px] ",
-                    active:
-                      "bg-[#A8A196]  hover:bg-[#A8A196]  hover:text-black dark:border-gray-700 text-black",
-                    disabled: "opacity-50 cursor-normal",
-                  },
-                },
-              }}
-            />
+                }}
+              />
+            )}
           </div>
         </div>
       </div>

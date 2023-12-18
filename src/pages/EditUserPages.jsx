@@ -31,7 +31,7 @@ function EsitUserPages() {
   const [isSuccesUpdate, setIsSuccesUpdate] = useState(false);
 
   const { register, handleSubmit, reset, formState } = useForm({
-    defaultValues: { name: "", email: "", role_id: "" },
+    defaultValues: { name: state.name, email: state.email, role_id: state.role_id },
   });
 
   const [selectedOption, setSelectedOption] = useState("");

@@ -23,7 +23,7 @@ function HeaderAdmin() {
     <div>
       <div className="flex justify-between">
         <NameAdmin />
-        <Logs type="button" onClick={openModal} />
+        {/* <Logs type="button" onClick={openModal} /> */}
         {isModalOpen && <LogsPopUp onClick={tesClick} pageCount={5} />}
       </div>
     </div>

@@ -14,7 +14,6 @@ function EditItemPages() {
   const { state } = useLocation();
 
   let opsi = [];
-  const [initName, setInitName] = useState(state.name)
 
   const {
     data:dataKategori,
@@ -36,7 +35,7 @@ function EditItemPages() {
   const [isSuccesUpdate, setIsSuccesUpdate] = useState(false);
 
   const { register, handleSubmit, reset, formState } = useForm({
-    defaultValues: { id: "", name: "", kategoriId: "" },
+    defaultValues: { id: state.id, name: state.name, kategoriId: state.kategori },
   });
 
   const onSubmit = async (data) => {
@@ -69,27 +68,25 @@ function EditItemPages() {
       <form action="" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col">
           <Input
-            value={initName}
             type="text"
             label="Nama Item "
             placeholder="Nama Item"
             propsRegis={{
               ...register("name", {
-                required: "Please enter your item", onChange: (e) => {
-                  setInitName(e.target.value)
-                }
+                required: "Please enter your item"
               }),
             }}
           />
           <p className="mt-4 text-[24px] font-normal">Kategori</p>
           <select
             id="kategoriId"
+            disabled
             {...register("kategoriId")}
             className=" border border-[#8B8B8B] text-gray-900 text-sm rounded-lg focus:outline-none focus:visible focus:ring-[#8B8B8B] focus:border-[#8B8B8B] block w-64 p-2.5 
       mt-2"
           >
             {opsi.map((option) => (
-              <option key={option.id} value={option.id}>
+              <option key={option.id} defaultValue={state.kategoriId} value={option.id}>
                 {option.kategori}
               </option>
             ))}
