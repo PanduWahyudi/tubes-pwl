@@ -6,6 +6,7 @@ import Input from "../components/Elements/Input";
 import { useForm } from "react-hook-form";
 import ActionButton from "../components/Elements/ActionButton";
 import SucsessPopUp from "../components/Fragments/SucsessPopUp";
+import { axiosInstance } from "../utils/AxiosInstance";
 
 function AddCategoryPages() {
   const { register, handleSubmit, reset, formState } = useForm({
@@ -14,9 +15,13 @@ function AddCategoryPages() {
 
   const [isSuccesUpdate, setIsSuccesUpdate] = useState(false);
 
-  const onSubmit = (data) => {
+  const onSubmit = async(data) => {
+    await axiosInstance.post(`/api/v1/kategori`, data, {
+      headers: {
+        "ngrok-skip-browser-warning": "69420",
+      },
+    })
     setIsSuccesUpdate(true);
-    console.log(data);
   };
   React.useEffect(() => {
     if (formState.isSubmitSuccessful) {
