@@ -47,7 +47,7 @@ function Home() {
             exit={{ opacity: 0 }}
             transition={{ duration: 2 }}
           >
-            <div className="flex flex-col space-y-4  w-80 ">
+            <div className="flex flex-col space-y-6  w-80 ">
               <p className="text-[32px] text-center font-medium">Login</p>
               <Input
                 type="text"
@@ -65,9 +65,9 @@ function Home() {
                   ...register("password"),
                 }}
               />
-              <div className="flex justify-end">
+              {/* <div className="flex justify-end">
                 <Link to="/lupa-kata-sandi">Lupa Password</Link>
-              </div>
+              </div> */}
               <div className=" flex justify-center mt-4">
                 <Button
                   variant="bg-[#6B240C] rounded-md"

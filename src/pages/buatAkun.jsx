@@ -45,7 +45,7 @@ function CreateAccount() {
             exit={{ opacity: 0 }}
             transition={{ duration: 2 }}
           >
-            <p className="text-[32px] text-center font-medium">
+            <p className="text-[32px] text-center font-medium mb-2">
               Anda Sudah Memiliki Akun ?
             </p>
 
