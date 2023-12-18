@@ -1,27 +1,39 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import SucsessPopUp from "../components/Fragments/SucsessPopUp";
 import AdminLayout from "../components/Layouts/AdminLayout";
 import Input from "../components/Elements/Input";
 import ActionButton from "../components/Elements/ActionButton";
+import { axiosInstance } from "../utils/AxiosInstance";
 
 function EditRackPages() {
+  const { state } = useLocation();
+
   const { register, handleSubmit, reset, formState } = useForm({
-    defaultValues: { rack: "" },
+    defaultValues: { name: "" },
   });
 
   const [isSuccesUpdate, setIsSuccesUpdate] = useState(false);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
+    const dataUpdate = {
+      id: state.id,
+      name: data.name,
+    };
+    await axiosInstance.put(`/api/v1/rack`, dataUpdate, {
+      headers: {
+        "ngrok-skip-browser-warning": "69420",
+      },
+    })
     setIsSuccesUpdate(true);
-    console.log(data);
+    // console.log(dataUpdate);
   };
 
   React.useEffect(() => {
     if (formState.isSubmitSuccessful) {
-      reset({ rack: "" });
+      reset({ name: "" });
     }
   }, [formState, reset]);
 
@@ -42,7 +54,7 @@ function EditRackPages() {
             label="Nama Item"
             placeholder="Nama Item"
             propsRegis={{
-              ...register("rack", {
+              ...register("name", {
                 required: "Please enter your item.",
               }),
             }}
