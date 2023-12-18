@@ -10,6 +10,7 @@ import SucsessPopUp from "../components/Fragments/SucsessPopUp";
 import InputHide from "../components/Elements/InputHide";
 import Helper from "../components/Elements/Helper";
 import { motion } from "framer-motion";
+import { axiosInstance } from "../utils/AxiosInstance";
 
 function CreateAccount() {
   const { register, handleSubmit, reset, formState } = useForm({
@@ -24,10 +25,17 @@ function CreateAccount() {
     setIsSuccesModalOpen(false);
   };
 
-  const onSubmit = (data) => {
-    setIsHelper(true);
+  const onSubmit = async (data) => {
+    if(data.password !== data.newPassword){
+      setIsHelper(true);
+      return;
+    }
+    await axiosInstance.post(`/api/v1/admin`, data, {
+      headers: {
+        "ngrok-skip-browser-warning": "69420",
+      }
+    })
     setIsSuccesModalOpen(true);
-    console.log(data);
   };
   React.useEffect(() => {
     if (formState.isSubmitSuccessful) {
@@ -125,7 +133,7 @@ function CreateAccount() {
                 )}
               </div>
               <Helper hide={!isHelper ? "hidden" : ""}>
-                Maasukkan Data yang diperlukan{" "}
+                Buat Akun Gagal, Pastikan Inputan Sesuai
               </Helper>
             </div>
           </motion.div>
