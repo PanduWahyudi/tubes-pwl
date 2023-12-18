@@ -28,7 +28,6 @@ function EditRackPages() {
       },
     })
     setIsSuccesUpdate(true);
-    // console.log(dataUpdate);
   };
 
   React.useEffect(() => {
