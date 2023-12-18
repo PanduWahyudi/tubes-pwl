@@ -64,6 +64,7 @@ function ItemPages() {
   };
 
   const handleDelete = async () => {
+    console.log(targetId);
     await axiosInstance.delete(`/api/v1/item/?id=${targetId}`, {
       headers: {
         "ngrok-skip-browser-warning": "69420",
@@ -132,7 +133,7 @@ function ItemPages() {
                     />
                     {isConfirModalOpen && (
                       <ConfirmationPopUP
-                        Ok={() => handleDelete(targetId)}
+                        Ok={() => handleDelete()}
                         Cancel={closeModal}
                         teks=" Anda Yakin Ingin Menghapus Data"
                         type="button"

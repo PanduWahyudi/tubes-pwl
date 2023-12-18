@@ -2,84 +2,54 @@ import { useState } from "react";
 import AdminLayout from "../components/Layouts/AdminLayout";
 import SearchBar from "../components/Elements/SearchBar";
 import { Pagination } from "flowbite-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import EditButton from "../components/Elements/EditButton";
 import DeleteButton from "../components/Elements/DeleteButton";
 import ConfirmationPopUP from "../components/Fragments/ConfirmationPopUp";
 import SucsessPopUp from "../components/Fragments/SucsessPopUp";
+import { axiosInstance } from "../utils/AxiosInstance";
+import useSWR, { mutate } from "swr";
 
 function CategoryPages() {
-  const dummy = [
-    {
-      id: 1,
-      kategori: "Elektronik",
-    },
-    {
-      id: 2,
-      kategori: "Elektronik 1",
-    },
-    {
-      id: 11,
-      nama: "Televisi",
-      kategori: "Elektronik 2",
-    },
-    {
-      id: 3,
-      kategori: "Elektronik 3",
-    },
-    {
-      id: 4,
-      kategori: "Elektronik 4",
-    },
-    {
-      kategori: "Elektronik 6",
-    },
-    {
-      id: 5,
-      nama: "Televisi 4",
-      kategori: "Elektronik 7",
-    },
-    {
-      id: 6,
-      kategori: "Elektronik 8",
-    },
-    {
-      id: 7,
-      kategori: "Elektronik 9",
-    },
-    {
-      id: 8,
-      kategori: "Elektronik 10",
-    },
-    {
-      id: 9,
-      kategori: "Elektronik 11",
-    },
-    {
-      id: 10,
-      kategori: "Elektronik 12",
-    },
-  ];
+
+  let dataKategori = [];
+
+  const { data } = useSWR(`/api/v1/kategori`, (url) =>
+    axiosInstance
+      .get(url, {
+        headers: {
+          "ngrok-skip-browser-warning": "69420",
+        },
+      })
+      .then((res) => res.data)
+  );
+
+  data?.map((item) => {
+    dataKategori.push(item);
+  });
+
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
+  const navigate = useNavigate();
 
   const [isConfirModalOpen, setIsConfirModalOpen] = useState(false);
   const [isSuccesModalOpen, setIsSuccesModalOpen] = useState(false);
   const [search, setSearch] = useState("");
 
-  const filteredItems = dummy.filter((item) =>
+  const filteredItems = dataKategori.filter((item) =>
     item.kategori.toLowerCase().includes(search.toLowerCase())
   );
 
   const totalFilteredPages = Math.ceil(filteredItems.length / itemsPerPage);
-
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const paginatedItems = filteredItems.slice(startIndex, endIndex);
 
   const onPageChange = (page) => setCurrentPage(page);
+  const [targetId, setTargetId] = useState();
 
-  const openConfirModal = () => {
+  const openConfirModal = (id) => {
+    setTargetId(id);
     setIsConfirModalOpen(true);
   };
 
@@ -95,6 +65,18 @@ function CategoryPages() {
   const closeModal = () => {
     setIsConfirModalOpen(false);
   };
+
+  const handleDelete = async () => {
+    console.log(targetId);
+    await axiosInstance.delete(`/api/v1/kategori?id=${targetId}`, {
+      headers: {
+        "ngrok-skip-browser-warning": "69420",
+      },
+    });
+    mutate("/api/v1/kategori");
+    setIsConfirModalOpen(false);
+    setIsSuccesModalOpen(true);
+  }
 
   return (
     <AdminLayout titlePage="Kategori">
@@ -139,16 +121,12 @@ function CategoryPages() {
                     {itemsPerPage * (currentPage - 1) + (index + 1)}
                   </td>
                   <td className="px-6 py-4">{item.kategori}</td>
-
                   <td className="px-6 py-4 flex space-x-3 justify-center">
-                    <DeleteButton onClick={openConfirModal} />
-                    <Link to={"/produk/kategori/edit-kategori" }>
-                      <EditButton />
-                    </Link>
+                    <DeleteButton onClick={()=>openConfirModal(item.id)} />
+                    <EditButton onClick={()=>navigate("/produk/kategori/edit-kategori",{state:{id:item.id, name:item.kategori}})} />
                     {isConfirModalOpen && (
                       <ConfirmationPopUP
-                        onClick={openConfirModal}
-                        Ok={closeConfirModal}
+                        Ok={()=>handleDelete()}
                         Cancel={closeModal}
                         teks=" Anda Yakin Ingin Menghapus Data"
                         type="button"

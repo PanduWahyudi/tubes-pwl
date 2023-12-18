@@ -14,7 +14,6 @@ function EditItemPages() {
   const { state } = useLocation();
 
   let opsi = [];
-  
   const [initName, setInitName] = useState(state.name)
 
   const {
