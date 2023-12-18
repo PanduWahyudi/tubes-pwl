@@ -15,7 +15,7 @@ import useSWR, { mutate } from "swr";
 function RackPages() {
 
   let dataRack = [];
-  navigate = useNavigate();
+  const navigate = useNavigate();
 
   const { data } = useSWR(`/api/v1/rack`, (url) =>
     axiosInstance

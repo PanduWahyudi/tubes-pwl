@@ -6,22 +6,27 @@ import SucsessPopUp from "../components/Fragments/SucsessPopUp";
 import AdminLayout from "../components/Layouts/AdminLayout";
 import Input from "../components/Elements/Input";
 import ActionButton from "../components/Elements/ActionButton";
+import { axiosInstance } from "../utils/AxiosInstance";
 
 function AddRackPages() {
   const { register, handleSubmit, reset, formState } = useForm({
-    defaultValues: { rack: "" },
+    defaultValues: { name: "" },
   });
 
   const [isSuccesUpdate, setIsSuccesUpdate] = useState(false);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
+    await axiosInstance.post(`/api/v1/rack`, data, {
+      headers: {
+        "ngrok-skip-browser-warning": "69420",
+      },
+    })
     setIsSuccesUpdate(true);
-    console.log(data);
   };
 
   React.useEffect(() => {
     if (formState.isSubmitSuccessful) {
-      reset({ rack: "" });
+      reset({ name: "" });
     }
   }, [formState, reset]);
 
@@ -29,7 +34,6 @@ function AddRackPages() {
 
   const closeSuccesUpdate = () => {
     setIsSuccesUpdate(false);
-
     navigate("/rack");
   };
 
@@ -42,7 +46,7 @@ function AddRackPages() {
             label="Nama Item"
             placeholder="Nama Item"
             propsRegis={{
-              ...register("rack", {
+              ...register("name", {
                 required: "Please enter your item.",
               }),
             }}
