@@ -22,7 +22,6 @@ function AddUserPages() {
       .then((res) => res.data)
   );
 
-  const [targetId, setTargetId] = useState();
   dataRole?.map((item) => {
     opsi.push(item);
   });
