@@ -6,22 +6,27 @@ import { useNavigate } from "react-router-dom";
 import Input from "../components/Elements/Input";
 import ActionButton from "../components/Elements/ActionButton";
 import SucsessPopUp from "../components/Fragments/SucsessPopUp";
+import { axiosInstance } from "../utils/AxiosInstance";
 
 function AddRolePages() {
   const { register, handleSubmit, reset, formState } = useForm({
-    defaultValues: { role: "" },
+    defaultValues: {  name: "" },
   });
 
   const [isSuccesUpdate, setIsSuccesUpdate] = useState(false);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
+    await axiosInstance.post(`/api/v1/role`, data, {
+      headers: {
+        "ngrok-skip-browser-warning": "69420",
+      },
+    })
     setIsSuccesUpdate(true);
-    console.log(data);
   };
 
   React.useEffect(() => {
     if (formState.isSubmitSuccessful) {
-      reset({ role: "" });
+      reset({ name: "" });
     }
   }, [formState, reset]);
 
@@ -29,7 +34,6 @@ function AddRolePages() {
 
   const closeSuccesUpdate = () => {
     setIsSuccesUpdate(false);
-
     navigate("/role");
   };
 
@@ -42,7 +46,7 @@ function AddRolePages() {
             label="Nama Role"
             placeholder="Nama Role"
             propsRegis={{
-              ...register("role", {
+              ...register("name", {
                 required: "Please enter your role.",
               }),
             }}
