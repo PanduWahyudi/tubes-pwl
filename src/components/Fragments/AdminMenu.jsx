@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import Exit from "./Menu Admin/Exit";
 import SucsessPopUp from "./SucsessPopUp";
 import ConfirmationPopUP from "./ConfirmationPopUp";
+import { axiosInstance } from "../../utils/AxiosInstance";
 
 function AdminMenu() {
   const navigate = useNavigate();
@@ -29,6 +30,18 @@ function AdminMenu() {
   const closeModal = () => {
     setIsConfirModalOpen(false);
   };
+
+  const handleLogout = async () => {
+    await axiosInstance.post(`/api/v1/logout`, {
+      token : localStorage.getItem("token"),
+    },{
+      headers: {
+        "ngrok-skip-browser-warning": "69420",
+      },
+    })
+    localStorage.removeItem("token");
+    navigate("/");
+  }
   return (
     <div className="  flex flex-col space-y-6">
       <div className="flex justify-center items-center py-[39px]   ">
@@ -47,8 +60,7 @@ function AdminMenu() {
         </button>
         {isConfirModalOpen && (
           <ConfirmationPopUP
-            onClick={openConfirModal}
-            Ok={closeConfirModal}
+            Ok={()=>handleLogout()}
             Cancel={closeModal}
             teks=" Anda Yakin Ingin Logout"
             type="button"

@@ -14,7 +14,7 @@ const AdminLayout = (props) => {
   useEffect(() => {
     console.log(state);
     const auth = async () => {
-      const authToken = await axiosInstance.get(`/api/v1/admin?id=${state.data.id}`, {
+      await axiosInstance.get(`/api/v1/admin?id=${state.data.id}`, {
         headers: {
           "ngrok-skip-browser-warning": "69420",
         },

@@ -38,6 +38,11 @@ function Home() {
     }).then((res) => {
       localStorage.setItem("token", res.data.token);
       navigate("/item", { state : { data : res.data } });
+    }).catch((err) => {
+      if(err.response.status === 400){
+        // setIsHelper(true);
+        setIsModalOpen(true);
+      }
     })
   };
 
@@ -94,7 +99,7 @@ function Home() {
                 <IncorrectPasswordPopUP
                   onClick={closeModal}
                   type="button"
-                  teks="Password Salah"
+                  teks="Login Gagal"
                 />
               )}
             </div>
