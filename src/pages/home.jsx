@@ -9,6 +9,8 @@ import { Link, useNavigate } from "react-router-dom";
 import InputHide from "../components/Elements/InputHide";
 import IncorrectPasswordPopUP from "../components/Fragments/IncorretPasswordPopUp";
 import Helper from "../components/Elements/Helper";
+import { axiosInstance } from "../utils/AxiosInstance";
+
 
 function Home() {
   const navigate = useNavigate();
@@ -22,13 +24,21 @@ function Home() {
     setIsModalOpen(false);
   };
 
-  const onSubmit = (data) => {
-    if (data.email !== "admin@gmail.com " && data.password !== "admin") {
-      setIsHelper(true);
-      setIsModalOpen(true);
-    } else {
-      navigate("/item");
-    }
+  const onSubmit = async (data) => {
+    // if (data.email !== "admin@gmail.com " && data.password !== "admin") {
+    //   setIsHelper(true);
+    //   setIsModalOpen(true);
+    // } else {
+    //   navigate("/item");
+    // }
+    await axiosInstance.post(`/api/v1/login`, data, {
+      headers: {
+        "ngrok-skip-browser-warning": "69420",
+      },
+    }).then((res) => {
+      localStorage.setItem("token", res.data.token);
+      navigate("/item", { state : { data : res.data } });
+    })
   };
 
   React.useEffect(() => {
