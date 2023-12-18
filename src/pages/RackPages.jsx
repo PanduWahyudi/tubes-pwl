@@ -2,64 +2,37 @@ import { useState } from "react";
 import AdminLayout from "../components/Layouts/AdminLayout";
 import SearchBar from "../components/Elements/SearchBar";
 import { Pagination } from "flowbite-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import EditButton from "../components/Elements/EditButton";
 import DeleteButton from "../components/Elements/DeleteButton";
 import ConfirmationPopUP from "../components/Fragments/ConfirmationPopUp";
 import SucsessPopUp from "../components/Fragments/SucsessPopUp";
 import RackButton from "../components/Elements/RackButton";
+import { axiosInstance } from "../utils/AxiosInstance";
+import useSWR, { mutate } from "swr";
+
 
 function RackPages() {
-  const dummy = [
-    {
-      id: 1,
-      rack: "Elektronik",
-    },
-    {
-      id: 2,
-      rack: "Elektronik 1",
-    },
-    {
-      id: 3,
-      rack: "Elektronik 2",
-    },
-    {
-      id: 4,
-      rack: "Elektronik 3",
-    },
-    {
-      id: 5,
-      rack: "Elektronik 4",
-    },
-    {
-      id: 6,
-      rack: "Elektronik 6",
-    },
-    {
-      id: 7,
-      rack: "Elektronik 7",
-    },
-    {
-      id: 8,
-      rack: "Elektronik 8",
-    },
-    {
-      id: 9,
-      rack: "Elektronik 9",
-    },
-    {
-      id: 10,
-      rack: "Elektronik 10",
-    },
-    {
-      id: 11,
-      rack: "Elektronik 11",
-    },
-    {
-      id: 12,
-      rack: "Elektronik 12",
-    },
-  ];
+
+  let dataRack = [];
+  navigate = useNavigate();
+
+  const { data } = useSWR(`/api/v1/rack`, (url) =>
+    axiosInstance
+      .get(url, {
+        headers: {
+          "ngrok-skip-browser-warning": "69420",
+        },
+      })
+      .then((res) => res.data)
+  );
+
+  const [targetId, setTargetId] = useState();
+
+  data?.map((item) => {
+    dataRack.push(item);
+  });
+
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
 
@@ -67,8 +40,8 @@ function RackPages() {
   const [isSuccesModalOpen, setIsSuccesModalOpen] = useState(false);
   const [search, setSearch] = useState("");
 
-  const filteredItems = dummy.filter((item) =>
-    item.rack.toLowerCase().includes(search.toLowerCase())
+  const filteredItems = dataRack.filter((item) =>
+    item.name.toLowerCase().includes(search.toLowerCase())
   );
 
   const totalFilteredPages = Math.ceil(filteredItems.length / itemsPerPage);
@@ -79,13 +52,9 @@ function RackPages() {
 
   const onPageChange = (page) => setCurrentPage(page);
 
-  const openConfirModal = () => {
+  const openConfirModal = (id) => {
+    setTargetId(id);
     setIsConfirModalOpen(true);
-  };
-
-  const closeConfirModal = () => {
-    setIsConfirModalOpen(false);
-    setIsSuccesModalOpen(true);
   };
 
   const closeSuccesModal = () => {
@@ -95,6 +64,17 @@ function RackPages() {
   const closeModal = () => {
     setIsConfirModalOpen(false);
   };
+
+  const handleDelete = async () => {
+    await axiosInstance.delete(`/api/v1/rack/?id=${targetId}`, {
+      headers: {
+        "ngrok-skip-browser-warning": "69420",
+      },
+    });
+    mutate("/api/v1/rack");
+    closeModal();
+    setIsSuccesModalOpen(true);
+  }
 
   return (
     <AdminLayout titlePage="Rack">
@@ -138,18 +118,15 @@ function RackPages() {
                   <td scope="row" className="px-6 py-4 ">
                     {itemsPerPage * (currentPage - 1) + (index + 1)}
                   </td>
-                  <td className="px-6 py-4">{item.rack}</td>
+                  <td className="px-6 py-4">{item.name}</td>
 
                   <td className="px-6 py-4 flex space-x-3 justify-center">
                     <RackButton to="/rack/item-rack" />
-                    <DeleteButton onClick={openConfirModal} />
-                    <Link to={"/rack/edit-rack"}>
-                      <EditButton />
-                    </Link>
+                    <DeleteButton onClick={() => openConfirModal(item.id)} />
+                      <EditButton onClick={() => navigate(`/rack/edit-rack`, { state: { id: item.id, name: item.name } })} />
                     {isConfirModalOpen && (
                       <ConfirmationPopUP
-                        onClick={openConfirModal}
-                        Ok={closeConfirModal}
+                        Ok={()=>handleDelete()}
                         Cancel={closeModal}
                         teks=" Anda Yakin Ingin Menghapus Data"
                         type="button"
