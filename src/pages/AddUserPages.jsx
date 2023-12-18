@@ -6,27 +6,47 @@ import Input from "../components/Elements/Input";
 import { useForm } from "react-hook-form";
 import ActionButton from "../components/Elements/ActionButton";
 import SucsessPopUp from "../components/Fragments/SucsessPopUp";
+import useSWR, { mutate } from "swr";
+import { axiosInstance } from "../utils/AxiosInstance";
 
 function AddUserPages() {
-  const opsi = [
-    { id: 0, value: "", label: "Pilih Role" },
-    { id: 1, value: "admin", label: "Admin" },
-    { id: 2, value: "user", label: "User" },
-    { id: 3, value: "umum", label: "Umum" },
-  ];
+  let opsi = [];
+
+  const { data: dataRole } = useSWR(`/api/v1/role`, (url) =>
+    axiosInstance
+      .get(url, {
+        headers: {
+          "ngrok-skip-browser-warning": "69420",
+        },
+      })
+      .then((res) => res.data)
+  );
+
+  const [targetId, setTargetId] = useState();
+  dataRole?.map((item) => {
+    opsi.push(item);
+  });
 
   const [isSuccesUpdate, setIsSuccesUpdate] = useState(false);
 
   const { register, handleSubmit, reset, formState } = useForm({
-    defaultValues: { name: "", email: "", countries: "" },
+    defaultValues: { name: "", email: "", role_id: "" },
   });
 
   const [selectedOption, setSelectedOption] = useState("");
 
-  const onSubmit = (data) => {
-    console.log("Kategori yang dipilih:", selectedOption);
+  const onSubmit = async (data) => {
+    let dataCreate = {
+      name : data.name,
+      email : data.email,
+      role_id : parseInt(data.role_id)
+    }
+    await axiosInstance.post("/api/v1/user", dataCreate,{
+      headers: {
+        "ngrok-skip-browser-warning": "69420",
+      },
+    })
     setIsSuccesUpdate(true);
-    console.log(data);
   };
 
   React.useEffect(() => {
@@ -74,24 +94,22 @@ function AddUserPages() {
               <p className="text-[24px] font-normal"> Role</p>
               <select
                 id="countries"
-                {...register("countries")}
+                {...register("role_id")}
                 onChange={(e) => setSelectedOption(e.target.value)}
                 className=" border border-[#8B8B8B] text-gray-900 text-sm rounded-lg focus:outline-none focus:visible focus:ring-[#8B8B8B] focus:border-[#8B8B8B] block w-64 p-2.5 
       mt-2"
               >
                 {opsi.map((option) => (
-                  <option key={option.id} value={option.value}>
-                    {option.label}
+                  <option key={option.id} value={option.id}>
+                    {option.name}
                   </option>
                 ))}
               </select>
             </div>
           </div>
-
           <div className="mt-2 flex justify-end">
             <ActionButton teks="Simpan" lebar="px-4 w-30" type="submit" />
           </div>
-
           {isSuccesUpdate && (
             <SucsessPopUp
               onClick={closeSuccesUpdate}

@@ -71,7 +71,6 @@ function UserPages() {
   };
 
   const handleDelete = () =>{
-    // console.log(targetId);
     axiosInstance.delete(`/api/v1/user/?id=${targetId}`, {
       headers: {
         "ngrok-skip-browser-warning": "69420",
