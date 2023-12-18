@@ -2,11 +2,13 @@ import { useState } from "react";
 import AdminLayout from "../components/Layouts/AdminLayout";
 import SearchBar from "../components/Elements/SearchBar";
 import EditButton from "../components/Elements/EditButton";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DeleteButton from "../components/Elements/DeleteButton";
 import ConfirmationPopUP from "../components/Fragments/ConfirmationPopUp";
 import SucsessPopUp from "../components/Fragments/SucsessPopUp";
 import { Pagination } from "flowbite-react";
+import { axiosInstance } from "../utils/AxiosInstance";
+import useSWR, { mutate } from "swr";
 
 function RolePages() {
   const dummy = [
@@ -47,6 +49,25 @@ function RolePages() {
       role: "User ",
     },
   ];
+
+  let dataRole = [];
+
+  const { data } = useSWR(`/api/v1/role`, (url) =>
+    axiosInstance
+      .get(url, {
+        headers: {
+          "ngrok-skip-browser-warning": "69420",
+        },
+      })
+      .then((res) => res.data)
+  );
+  
+  data?.map((item) => {
+    dataRole.push(item);
+  });
+
+  console.log(dataRole);
+
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
 
@@ -54,8 +75,8 @@ function RolePages() {
   const [isSuccesModalOpen, setIsSuccesModalOpen] = useState(false);
   const [search, setSearch] = useState("");
 
-  const filteredItems = dummy.filter((item) =>
-    item.role.toLowerCase().includes(search.toLowerCase())
+  const filteredItems = dataRole.filter((item) =>
+    item.name.toLowerCase().includes(search.toLowerCase())
   );
 
   const totalFilteredPages = Math.ceil(filteredItems.length / itemsPerPage);
@@ -65,8 +86,10 @@ function RolePages() {
   const paginatedItems = filteredItems.slice(startIndex, endIndex);
 
   const onPageChange = (page) => setCurrentPage(page);
+  const [targetId, setTargetId] = useState();
 
-  const openConfirModal = () => {
+  const openConfirModal = (id) => {
+    setTargetId(id);
     setIsConfirModalOpen(true);
   };
 
@@ -82,6 +105,19 @@ function RolePages() {
   const closeModal = () => {
     setIsConfirModalOpen(false);
   };
+
+  const navigate = useNavigate();
+  
+  const handleDelete = async () => {
+    await axiosInstance.delete(`/api/v1/role?id=${targetId}`, {
+      headers: {
+        "ngrok-skip-browser-warning": "69420",
+      },
+    });
+    mutate("/api/v1/role");
+    setIsConfirModalOpen(false);
+    setIsSuccesModalOpen(true);
+  }
 
   return (
     <AdminLayout titlePage="Role">
@@ -125,18 +161,13 @@ function RolePages() {
                   <td scope="row" className="px-6 py-4 ">
                     {itemsPerPage * (currentPage - 1) + (index + 1)}
                   </td>
-
-                  <td className="px-6 py-4">{item.role}</td>
-
+                  <td className="px-6 py-4">{item.name}</td>
                   <td className="px-6 py-4 flex space-x-3 justify-center">
-                    <DeleteButton onClick={openConfirModal} />
-                    <Link to={"/role/edit-role"}>
-                      <EditButton />
-                    </Link>
+                      <DeleteButton onClick={()=>openConfirModal(item.id)} />
+                      <EditButton onClick={() => navigate("/role/edit-role", { state: { id: item.id, name: item.name } })} />
                     {isConfirModalOpen && (
                       <ConfirmationPopUP
-                        onClick={openConfirModal}
-                        Ok={closeConfirModal}
+                        Ok={handleDelete()}
                         Cancel={closeModal}
                         teks=" Anda Yakin Ingin Menghapus Data"
                         type="button"
