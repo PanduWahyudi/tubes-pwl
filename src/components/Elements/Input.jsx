@@ -1,9 +1,10 @@
 /* eslint-disable react/prop-types */
 
-function Input({ placeholder, propsRegis, label, type }) {
+function Input({ placeholder, propsRegis, label, type, value }) {
   return (
     <div className="relative">
       <input
+        value={value}
         type={type}
         id="floating_outlined"
         className="block px-2.5 pb-2.5 pt-4 w-full text-[14px] text-gray-900 bg-transparent rounded-lg border-1 border-[#8B8B8B] appearance-none   focus:outline-none focus:ring-[#8B8B8B] focus:border-[#8B8B8B] peer"

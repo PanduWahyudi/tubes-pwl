@@ -1,87 +1,45 @@
-// import React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AdminLayout from "../components/Layouts/AdminLayout";
 import SearchBar from "../components/Elements/SearchBar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import EditButton from "../components/Elements/EditButton";
 import DeleteButton from "../components/Elements/DeleteButton";
-// import Pagination from "../components/Elements/Pagination";
 import { Pagination } from "flowbite-react";
 import ConfirmationPopUP from "../components/Fragments/ConfirmationPopUp";
 import SucsessPopUp from "../components/Fragments/SucsessPopUp";
+import useSWR, { mutate } from "swr";
+import { axiosInstance } from "../utils/AxiosInstance";
 
 function ItemPages() {
-  const dummy = [
-    {
-      id: 1,
-      nama: "Telvisi",
-      kategori: "Elektronik",
-    },
-    {
-      id: 2,
-      nama: "Telvisi",
-      kategori: "Elektronik",
-    },
-    {
-      id: 3,
-      nama: "Televisi",
-      kategori: "Elektronik",
-    },
-    {
-      id: 4,
-      nama: "Televisi 1",
-      kategori: "Elektronik",
-    },
-    {
-      nama: "Televisi 2",
-      kategori: "Elektronik",
-    },
-    {
-      id: 5,
-      nama: "Televisi 3",
-      kategori: "Elektronik",
-    },
-    {
-      nama: "Televisi 4",
-      kategori: "Elektronik",
-    },
-    {
-      id: 6,
-      nama: "Televisi 5",
-      kategori: "Elektronik",
-    },
-    {
-      id: 7,
-      nama: "Televisi 6",
-      kategori: "Elektronik",
-    },
-    {
-      nama: "Televisi 7",
-      kategori: "Elektronik",
-    },
-    {
-      id: 8,
-      nama: "Televisi 8",
-      kategori: "Elektronik",
-    },
-    {
-      id: 9,
-      nama: "Televisi 9",
-      kategori: "Elektronik",
-    },
-  ];
+  let dataProduk = [];
 
+  const { data, error, isLoading } = useSWR(`/api/v1/item`, (url) =>
+    axiosInstance
+      .get(url, {
+        headers: {
+          "ngrok-skip-browser-warning": "69420",
+        },
+      })
+      .then((res) => res.data)
+  );
+
+  data?.map((item) => {
+    dataProduk.push(item);
+  });
+
+  const [targetId, setTargetId] = useState();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
+  const navigate = useNavigate();
 
   const [isConfirModalOpen, setIsConfirModalOpen] = useState(false);
   const [isSuccesModalOpen, setIsSuccesModalOpen] = useState(false);
   const [search, setSearch] = useState("");
 
-  const filteredItems = dummy.filter(
+  const filteredItems = dataProduk.filter(
     (item) =>
-      item.nama.toLowerCase().includes(search.toLowerCase()) ||
-      item.kategori.toLowerCase().includes(search.toLowerCase())
+      item.name.toLowerCase().includes(search.toLowerCase()) ||
+      item.kategori.kategori.toLowerCase().includes(search.toLowerCase())
   );
 
   const totalFilteredPages = Math.ceil(filteredItems.length / itemsPerPage);
@@ -92,13 +50,9 @@ function ItemPages() {
 
   const onPageChange = (page) => setCurrentPage(page);
 
-  const openConfirModal = () => {
+  const openConfirModal = (id) => {
+    setTargetId(id);
     setIsConfirModalOpen(true);
-  };
-
-  const closeConfirModal = () => {
-    setIsConfirModalOpen(false);
-    setIsSuccesModalOpen(true);
   };
 
   const closeSuccesModal = () => {
@@ -107,6 +61,17 @@ function ItemPages() {
 
   const closeModal = () => {
     setIsConfirModalOpen(false);
+  };
+
+  const handleDelete = async () => {
+    await axiosInstance.delete(`/api/v1/item/?id=${targetId}`, {
+      headers: {
+        "ngrok-skip-browser-warning": "69420",
+      },
+    });
+    mutate("/api/v1/item");
+    setIsConfirModalOpen(false);
+    setIsSuccesModalOpen(true);
   };
 
   return (
@@ -154,18 +119,20 @@ function ItemPages() {
                   <td scope="row" className="px-6 py-4 ">
                     {itemsPerPage * (currentPage - 1) + (index + 1)}
                   </td>
-                  <td className="px-6 py-4">{item.nama}</td>
-                  <td className="px-6 py-4">{item.kategori}</td>
+                  <td className="px-6 py-4">{item.name}</td>
+                  <td className="px-6 py-4">{item.kategori.kategori}</td>
                   <td className="px-6 py-4 flex space-x-3 justify-center">
-                    <DeleteButton onClick={openConfirModal} />
-                    <Link to={"/produk/item/edit-produk"}>
-                      <EditButton />
-                    </Link>
-
+                    <DeleteButton onClick={() => openConfirModal(item.id)} />
+                    <EditButton
+                      onClick={() =>
+                        navigate(`/produk/item/edit-produk`, {
+                          state: { id: item.id, name: item.name }
+                        })
+                      }
+                    />
                     {isConfirModalOpen && (
                       <ConfirmationPopUP
-                        onClick={openConfirModal}
-                        Ok={closeConfirModal}
+                        Ok={() => handleDelete(targetId)}
                         Cancel={closeModal}
                         teks=" Anda Yakin Ingin Menghapus Data"
                         type="button"
@@ -183,11 +150,6 @@ function ItemPages() {
               ))}
             </tbody>
           </table>
-          {/* <Pagination
-            pageCount={5} // Jumlah halaman total
-            // Callback saat halaman berubah
-          /> */}
-
           <div className="flex justify-center items-center">
             <Pagination
               currentPage={currentPage}
