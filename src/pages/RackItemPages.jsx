@@ -6,67 +6,96 @@ import AdminMenu from "../components/Fragments/AdminMenu";
 import HeaderAdmin from "../components/Fragments/HeaderAdmin";
 import { Pagination } from "flowbite-react";
 import SearchBar from "../components/Elements/SearchBar";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import EditButton from "../components/Elements/EditButton";
 import DeleteButton from "../components/Elements/DeleteButton";
 import ConfirmationPopUP from "../components/Fragments/ConfirmationPopUp";
 import SucsessPopUp from "../components/Fragments/SucsessPopUp";
+import { axiosInstance } from "../utils/AxiosInstance";
+import useSWR, { mutate } from "swr";
 
 function RackItemPages() {
-  const dummy = [
-    {
-      item: "Televisi",
-    },
-    {
-      item: "Televisi 1",
-    },
-    {
-      item: "Televisi 2",
-    },
-    {
-      item: "Televisi 3",
-    },
-    {
-      item: "Televisi 4",
-    },
-    {
-      item: "Televisi 6",
-    },
-    {
-      item: "Televisi 7",
-    },
-    {
-      item: "Televisi 8",
-    },
-    {
-      item: "Televisi 9",
-    },
-    {
-      item: "Televisi 10",
-    },
-    {
-      item: "Televisi 11",
-    },
-    {
-      item: "Televisi 12",
-    },
-  ];
+  let dataRackItem = [];
+  const { state } = useLocation();
+  const [targetId, setTargetId] = useState();
+  const navigate = useNavigate();
+
+  let opsi = [];
+
+  const { data } = useSWR(`/api/v1/getItemByRackId?rackId=${state.id}`, (url) =>
+    axiosInstance
+      .get(url, {
+        headers: {
+          "ngrok-skip-browser-warning": "69420",
+        },
+      })
+      .then((res) => res.data)
+  );
+
+  const { data:dataItem } = useSWR(`/api/v1/item`, (url) =>
+    axiosInstance
+      .get(url, {
+        headers: {
+          "ngrok-skip-browser-warning": "69420",
+        },
+      })
+      .then((res) => res.data)
+  );
+
+  dataItem?.map((item) => {
+    opsi.push(item);
+  })
+
+  data?.map((item) => {
+    dataRackItem.push(item);
+  });
+
   const [isSuccesUpdate, setIsSuccesUpdate] = useState(false);
   const { register, handleSubmit, reset, formState } = useForm({
-    defaultValues: { countries: "" },
+    defaultValues: { itemId: "" },
+  });
+
+  const { register: registerEdit, handleSubmit: handleSubmitEdit, reset: resetEdit, formState: formStateEdit } = useForm({
+    defaultValues: { itemId: "" },
   });
   const [selectedOption, setSelectedOption] = useState("");
 
-  const onSubmit = (data) => {
-    console.log("Kategori yang dipilih:", selectedOption);
+  const onSubmit = async (data) => {
+    let dataCreate = {
+      itemId : parseInt(data.itemId),
+      rackId : state.id,
+    }
+    await axiosInstance.post("/api/v1/RITEM", dataCreate, {
+      headers: {
+        "ngrok-skip-browser-warning": "69420",
+      },
+    })
+    mutate(`/api/v1/getItemByRackId?rackId=${state.id}`);
     setIsAddItemModal(false);
     setIsEditItemModal(false);
     setIsSuccesUpdate(true);
-    console.log(data);
   };
+
+  const onSubmitEdit = async (data) => {
+    let dataCreate = {
+      id : targetId,
+      itemId : parseInt(data.itemId),
+      rackId : state.id,
+    }
+    await axiosInstance.put("/api/v1/RITEM", dataCreate, {
+      headers: {
+        "ngrok-skip-browser-warning": "69420",
+      },
+    })
+    mutate(`/api/v1/getItemByRackId?rackId=${state.id}`);
+    setIsAddItemModal(false);
+    setIsEditItemModal(false);
+    setIsSuccesUpdate(true);
+  };
+
   React.useEffect(() => {
     if (formState.isSubmitSuccessful) {
-      reset({ countries: "" });
+      reset({ itemId: "" });
     }
   }, [formState, reset]);
 
@@ -79,8 +108,8 @@ function RackItemPages() {
 
   const [search, setSearch] = useState("");
 
-  const filteredItems = dummy.filter((item) =>
-    item.item.toLowerCase().includes(search.toLowerCase())
+  const filteredItems = dataRackItem.filter((item) =>
+    item.item.name.toLowerCase().includes(search.toLowerCase())
   );
 
   const totalFilteredPages = Math.ceil(filteredItems.length / itemsPerPage);
@@ -109,11 +138,13 @@ function RackItemPages() {
     setIsEditItemModal(false);
   };
 
-  const openEditItemModal = () => {
+  const openEditItemModal = (id) => {
+    setTargetId(id);
     setIsEditItemModal(true);
   };
 
-  const openConfirModal = () => {
+  const openConfirModal = (id) => {
+    setTargetId(id);
     setIsConfirModalOpen(true);
   };
 
@@ -130,19 +161,23 @@ function RackItemPages() {
     setIsConfirModalOpen(false);
   };
 
-  const opsi = [
-    { id: 0, value: "", label: "Pilih Item" },
-    { id: 1, value: "televisi", label: "Televisi" },
-    { id: 2, value: "blender", label: "Blender" },
-    { id: 3, value: "kulkas", label: "Kulkas" },
-  ];
+  const handleDelete = async () => {
+    await axiosInstance.delete(`/api/v1/RITEM?id=${targetId}`, {
+      headers: {
+        "ngrok-skip-browser-warning": "69420",
+      },
+    });
+    mutate(`/api/v1/getItemByRackId?rackId=${state.id}`);
+    closeModal();
+    setIsSuccesModalOpen(true);
+  };
+
   return (
     <div className="bg-[#E48F45] p-[5px] h-screen">
       <div className="flex justify-between">
         <div className="w-1/5">
           <AdminMenu />
         </div>
-
         <CardAdmin>
           <HeaderAdmin />
           <div className="flex space-x-2 items-center">
@@ -214,15 +249,16 @@ function RackItemPages() {
                       <td scope="row" className="px-6 py-4 ">
                         {itemsPerPage * (currentPage - 1) + (index + 1)}
                       </td>
-                      <td className="px-6 py-4">{item.item}</td>
+                      <td className="px-6 py-4">{item.item.name}</td>
 
                       <td className="px-6 py-4 flex space-x-3 justify-center">
-                        <DeleteButton onClick={openConfirModal} />
-                        <EditButton onClick={openEditItemModal} />
+                        <DeleteButton
+                          onClick={() => openConfirModal(item.id)}
+                        />
+                        <EditButton onClick={()=>openEditItemModal(item.id)} />
                         {isConfirModalOpen && (
                           <ConfirmationPopUP
-                            onClick={openConfirModal}
-                            Ok={closeConfirModal}
+                            Ok={() => handleDelete()}
                             Cancel={closeModal}
                             teks=" Anda Yakin Ingin Menghapus Data"
                             type="button"
@@ -306,14 +342,14 @@ function RackItemPages() {
                     <div className="my-4">
                       <p className="text-[24px]">Item</p>
                       <select
-                        id="countries"
-                        {...register("countries")}
+                        id="itemId"
+                        {...register("itemId")}
                         onChange={(e) => setSelectedOption(e.target.value)}
                         className="border border-[#8B8B8B] text-gray-900 text-sm rounded-lg focus:outline-none focus:visible focus:ring-[#8B8B8B] focus:border-[#8B8B8B] block w-8/12 p-2.5 mt-2"
                       >
-                        {opsi.map((option) => (
-                          <option key={option.id} value={option.value}>
-                            {option.label}
+                        {opsi.map((option, index) => (
+                          <option key={index} value={option.id}>
+                            {option.name}
                           </option>
                         ))}
                       </select>
@@ -343,7 +379,7 @@ function RackItemPages() {
 
             {isEditItemModal && (
               <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-black bg-opacity-50 z-[99]">
-                <form action="" onSubmit={handleSubmit(onSubmit)}>
+                <form action="" onSubmit={handleSubmitEdit(onSubmitEdit)}>
                   <div className="bg-white py-[8px] px-[13px] w-96 rounded-md">
                     <div className="flex justify-between items-center border-b border-black">
                       <p className="text-[24px] font-medium">Edit Item</p>
@@ -375,13 +411,13 @@ function RackItemPages() {
                     <div className="my-4">
                       <p className="text-[24px]">Item</p>
                       <select
-                        id="countries"
-                        {...register("countries")}
+                        id="itemId"
+                        {...registerEdit("itemId")}
                         className="border border-[#8B8B8B] text-gray-900 text-sm rounded-lg focus:outline-none focus:visible focus:ring-[#8B8B8B] focus:border-[#8B8B8B] block w-8/12 p-2.5 mt-2"
                       >
                         {opsi.map((option) => (
-                          <option key={option.id} value={option.value}>
-                            {option.label}
+                          <option key={option.id} value={option.id}>
+                            {option.name}
                           </option>
                         ))}
                       </select>

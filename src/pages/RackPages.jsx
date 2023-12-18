@@ -121,7 +121,7 @@ function RackPages() {
                   <td className="px-6 py-4">{item.name}</td>
 
                   <td className="px-6 py-4 flex space-x-3 justify-center">
-                    <RackButton to="/rack/item-rack" />
+                    <RackButton onClick={() => navigate(`/rack/item-rack`, { state: { id: item.id, name: item.name } })} />
                     <DeleteButton onClick={() => openConfirModal(item.id)} />
                       <EditButton onClick={() => navigate(`/rack/edit-rack`, { state: { id: item.id, name: item.name } })} />
                     {isConfirModalOpen && (
