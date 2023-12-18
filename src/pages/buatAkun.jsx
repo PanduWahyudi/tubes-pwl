@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import SucsessPopUp from "../components/Fragments/SucsessPopUp";
 import InputHide from "../components/Elements/InputHide";
 import Helper from "../components/Elements/Helper";
+import { motion } from "framer-motion";
 
 function CreateAccount() {
   const { register, handleSubmit, reset, formState } = useForm({
@@ -35,10 +36,15 @@ function CreateAccount() {
   }, [formState, reset]);
 
   return (
-    <div className="">
-      <Authlayout height="h-auto">
-        <div className="flex space-x-10 items-center ">
-          <div className="flex flex-col space-y-4">
+    <Authlayout height="h-auto">
+      <div className="flex space-x-10 items-center ">
+        <div className="flex flex-col space-y-4">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 2 }}
+          >
             <p className="text-[32px] text-center font-medium">
               Anda Sudah Memiliki Akun ?
             </p>
@@ -51,10 +57,23 @@ function CreateAccount() {
                 Login
               </Link>
             </div>
-          </div>
+          </motion.div>
+        </div>
 
+        <motion.div
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5 }}
+        >
           <div className="w-[1px] bg-black h-[450px]"></div>
-          <form action="" onSubmit={handleSubmit(onSubmit)}>
+        </motion.div>
+        <form action="" onSubmit={handleSubmit(onSubmit)}>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 2 }}
+          >
             <div className="flex flex-col space-y-4  w-80 ">
               <p className="text-[32px] text-center font-medium">Buat Akun</p>
               <Input
@@ -109,10 +128,10 @@ function CreateAccount() {
                 Maasukkan Data yang diperlukan{" "}
               </Helper>
             </div>
-          </form>
-        </div>
-      </Authlayout>
-    </div>
+          </motion.div>
+        </form>
+      </div>
+    </Authlayout>
   );
 }
 

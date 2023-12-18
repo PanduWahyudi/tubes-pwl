@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import { motion } from "framer-motion"; // Import motion from Framer Motion
 import Authlayout from "../components/Layouts/Authlayout";
 import Button from "../components/Elements/Button";
 import Input from "../components/Elements/Input";
@@ -22,16 +23,14 @@ function Home() {
   };
 
   const onSubmit = (data) => {
-    if (data.email != "admin@gmail.com " && data.password != "admin") {
-      // setIsHelper(true);
+    if (data.email !== "admin@gmail.com " && data.password !== "admin") {
       setIsHelper(true);
-      console.log(data);
       setIsModalOpen(true);
     } else {
-      console.log(data);
       navigate("/item");
     }
   };
+
   React.useEffect(() => {
     if (formState.isSubmitSuccessful) {
       reset({ email: "", password: "" });
@@ -39,10 +38,15 @@ function Home() {
   }, [formState, reset]);
 
   return (
-    <div className="">
-      <Authlayout height="h-[550px]">
-        <div className="flex space-x-10 items-center ">
-          <form action="" onSubmit={handleSubmit(onSubmit)}>
+    <Authlayout height="h-[550px]">
+      <div className="flex space-x-10 items-center ">
+        <form action="" onSubmit={handleSubmit(onSubmit)}>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 2 }}
+          >
             <div className="flex flex-col space-y-4  w-80 ">
               <p className="text-[32px] text-center font-medium">Login</p>
               <Input
@@ -74,7 +78,7 @@ function Home() {
                 </Button>
               </div>
               <Helper hide={!isHelper ? "hidden" : ""}>
-                Maasukkan Data yang diperlukan{" "}
+                Masukkan Data yang diperlukan
               </Helper>
               {isModalOpen && (
                 <IncorrectPasswordPopUP
@@ -84,9 +88,21 @@ function Home() {
                 />
               )}
             </div>
-          </form>
-
+          </motion.div>
+        </form>
+        <motion.div
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5 }}
+        >
           <div className="w-[1px] bg-black h-[450px]"></div>
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 2 }}
+        >
           <div className="flex flex-col space-y-4">
             <p className="text-[32px] text-center font-medium">
               Anda Belum Memiliki Akun ?
@@ -101,9 +117,9 @@ function Home() {
               </Link>
             </div>
           </div>
-        </div>
-      </Authlayout>
-    </div>
+        </motion.div>
+      </div>
+    </Authlayout>
   );
 }
 
