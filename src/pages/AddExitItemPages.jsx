@@ -6,21 +6,33 @@ import Input from "../components/Elements/Input";
 import { useForm } from "react-hook-form";
 import ActionButton from "../components/Elements/ActionButton";
 import SucsessPopUp from "../components/Fragments/SucsessPopUp";
+import { axiosInstance } from "../utils/AxiosInstance";
 
 function AddExitItemPages() {
   const { register, handleSubmit, reset, formState } = useForm({
-    defaultValues: { item: "", date: "", supplierId: "", qty: 0 },
+    defaultValues: { item: "", tanggalKeluar: "", supplierID: "", qty: 0 },
   });
 
   const [isSuccesUpdate, setIsSuccesUpdate] = useState(false);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
+    let dataUpdate = {
+      item: data.item,
+      supplierID: (data.supplierID).toUpperCase(),
+      qty: data.qty,
+      tanggalKeluar: data.tanggalKeluar,
+    }
+    await axiosInstance.post(`/api/v1/keluar`, dataUpdate, {
+      headers: {
+        "ngrok-skip-browser-warning": "69420",
+      },
+    })
     setIsSuccesUpdate(true);
-    console.log(data);
   };
+
   React.useEffect(() => {
     if (formState.isSubmitSuccessful) {
-      reset({ item: "", date: "", supplierId: "", qty: 0 });
+      reset({ item: "", tanggalKeluar: "", supplierID: "", qty: 0 });
     }
   }, [formState, reset]);
 
@@ -28,7 +40,6 @@ function AddExitItemPages() {
 
   const closeSuccesUpdate = () => {
     setIsSuccesUpdate(false);
-
     navigate("/barang-keluar");
   };
 
@@ -53,7 +64,7 @@ function AddExitItemPages() {
               <input
                 className="border border-[#8B8B8B] text-gray-900 text-md rounded-lg  focus:border-[#8B8B8B] focus:ring-[#8B8B8B] block w-40  red-500  focus:outline-none  "
                 type="date"
-                {...register("date")}
+                {...register("tanggalKeluar")}
               />
             </div>
 
@@ -64,7 +75,7 @@ function AddExitItemPages() {
                 name="suplier"
                 placeholder="Supplier Id"
                 className="bg-white h-10 px-4 rounded-md  focus:outline-none border border-[#8B8B8B] w-64 text-[16px] focus:ring-[#8B8B8B] focus:border-[#8B8B8B] "
-                {...register("supplierId")}
+                {...register("supplierID")}
               />
             </div>
 

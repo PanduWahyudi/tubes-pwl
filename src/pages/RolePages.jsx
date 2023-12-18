@@ -61,7 +61,7 @@ function RolePages() {
       })
       .then((res) => res.data)
   );
-  
+
   data?.map((item) => {
     dataRole.push(item);
   });
@@ -107,7 +107,7 @@ function RolePages() {
   };
 
   const navigate = useNavigate();
-  
+
   const handleDelete = async () => {
     await axiosInstance.delete(`/api/v1/role?id=${targetId}`, {
       headers: {
@@ -117,7 +117,7 @@ function RolePages() {
     mutate("/api/v1/role");
     setIsConfirModalOpen(false);
     setIsSuccesModalOpen(true);
-  }
+  };
 
   return (
     <AdminLayout titlePage="Role">
@@ -163,11 +163,17 @@ function RolePages() {
                   </td>
                   <td className="px-6 py-4">{item.name}</td>
                   <td className="px-6 py-4 flex space-x-3 justify-center">
-                      <DeleteButton onClick={()=>openConfirModal(item.id)} />
-                      <EditButton onClick={() => navigate("/role/edit-role", { state: { id: item.id, name: item.name } })} />
+                    <DeleteButton onClick={() => openConfirModal(item.id)} />
+                    <EditButton
+                      onClick={() =>
+                        navigate("/role/edit-role", {
+                          state: { id: item.id, name: item.name },
+                        })
+                      }
+                    />
                     {isConfirModalOpen && (
                       <ConfirmationPopUP
-                        Ok={handleDelete()}
+                        Ok={() => handleDelete()}
                         Cancel={closeModal}
                         teks=" Anda Yakin Ingin Menghapus Data"
                         type="button"

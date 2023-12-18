@@ -23,6 +23,7 @@ function AddIncomingGoodsPages() {
     })
     setIsSuccesUpdate(true);
   };
+  
   React.useEffect(() => {
     if (formState.isSubmitSuccessful) {
       reset({ item: "", tanggalMasuk: "", supplierID: "", qty: 0 });
