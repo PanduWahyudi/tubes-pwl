@@ -10,7 +10,6 @@ import SucsessPopUp from "../components/Fragments/SucsessPopUp";
 import { axiosInstance } from "../utils/AxiosInstance";
 import useSWR, { mutate } from "swr";
 
-
 function ExitItemPages() {
   const dummy = [
     {
@@ -96,8 +95,6 @@ function ExitItemPages() {
     dataKeluar.push(item);
   });
 
-  console.log(dataKeluar);
-
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
 
@@ -121,7 +118,8 @@ function ExitItemPages() {
 
   const onPageChange = (page) => setCurrentPage(page);
 
-  const openConfirModal = () => {
+  const openConfirModal = (id) => {
+    setTargetId(id);
     setIsConfirModalOpen(true);
   };
 
@@ -138,6 +136,17 @@ function ExitItemPages() {
     setIsConfirModalOpen(false);
   };
 
+  const handleDelete = async () => {
+    await axiosInstance.delete(`/api/v1/keluar?id=${targetId}`, {
+      headers: {
+        "ngrok-skip-browser-warning": "69420",
+      },
+    });
+    mutate("/api/v1/keluar");
+    setIsConfirModalOpen(false);
+    setIsSuccesModalOpen(true);
+  }
+
   return (
     <AdminLayout titlePage="Barang Keluar">
       <div className="flex flex-col ">
@@ -145,14 +154,14 @@ function ExitItemPages() {
           <SearchBar
             onChange={(e) => {
               setSearch(e.target.value);
-              setCurrentPage(1); // Reset current page when search changes
+              setCurrentPage(1);
             }}
           />
           <Link
             to="/barang-keluar/tambah-barang-keluar"
             className="w-[155px] bg-[#6B240C] py-2 text-center text-white rounded-md "
           >
-            - Barang Keluar
+            + Barang Keluar
           </Link>
         </div>
         <div className=" overflow-x-auto rounded-md mt-4 mb-6 h-96 flex flex-col justify-between">
@@ -189,20 +198,22 @@ function ExitItemPages() {
                   <td scope="row" className="px-6 py-4 ">
                     {itemsPerPage * (currentPage - 1) + (index + 1)}
                   </td>
-                  <td className="px-6 py-4">{item.produk}</td>
-                  <td className="px-6 py-4">{item.waktu}</td>
-                  <td className="px-6 py-4">{item.idSupplier}</td>
+                  <td className="px-6 py-4">{item.item}</td>
+                  <td className="px-6 py-4">{item.tanggalKeluar}</td>
+                  <td className="px-6 py-4">{item.supplierID}</td>
                   <td className="px-6 py-4">{item.qty}</td>
-
                   <td className="px-6 py-4 flex space-x-3 justify-center">
-                    <DeleteButton onClick={openConfirModal} />
-                    <Link to={"/barang-keluar/edit-barang-keluar"}>
-                      <EditButton />
-                    </Link>
+                    <DeleteButton onClick={()=>openConfirModal(item.id)} />
+                    <EditButton
+                      onClick={() =>
+                        navigate(`/barang-keluar/edit-barang-keluar/`, {
+                          state: item,
+                        })
+                      }
+                    />
                     {isConfirModalOpen && (
                       <ConfirmationPopUP
-                        onClick={openConfirModal}
-                        Ok={closeConfirModal}
+                        Ok={() => handleDelete()}
                         Cancel={closeModal}
                         teks=" Anda Yakin Ingin Menghapus Data"
                         type="button"
