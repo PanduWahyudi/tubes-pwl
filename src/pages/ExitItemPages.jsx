@@ -2,11 +2,14 @@ import { useState } from "react";
 import AdminLayout from "../components/Layouts/AdminLayout";
 import { Pagination } from "flowbite-react";
 import SearchBar from "../components/Elements/SearchBar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import EditButton from "../components/Elements/EditButton";
 import DeleteButton from "../components/Elements/DeleteButton";
 import ConfirmationPopUP from "../components/Fragments/ConfirmationPopUp";
 import SucsessPopUp from "../components/Fragments/SucsessPopUp";
+import { axiosInstance } from "../utils/AxiosInstance";
+import useSWR, { mutate } from "swr";
+
 
 function ExitItemPages() {
   const dummy = [
@@ -75,6 +78,26 @@ function ExitItemPages() {
     },
   ];
 
+  let dataKeluar = [];
+  const [targetId, setTargetId] = useState();
+  const navigate = useNavigate();
+
+  const { data } = useSWR(`/api/v1/keluar`, (url) =>
+    axiosInstance
+      .get(url, {
+        headers: {
+          "ngrok-skip-browser-warning": "69420",
+        },
+      })
+      .then((res) => res.data)
+  );
+
+  data?.map((item) => {
+    dataKeluar.push(item);
+  });
+
+  console.log(dataKeluar);
+
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
 
@@ -82,11 +105,11 @@ function ExitItemPages() {
   const [isSuccesModalOpen, setIsSuccesModalOpen] = useState(false);
   const [search, setSearch] = useState("");
 
-  const filteredItems = dummy.filter(
+  const filteredItems = dataKeluar.filter(
     (item) =>
-      item.produk.toLowerCase().includes(search.toLowerCase()) ||
-      item.idSupplier.toLowerCase().includes(search.toLowerCase()) ||
-      item.waktu.toLowerCase().includes(search.toLowerCase()) || // Filter for item.waktu
+      item.item.toLowerCase().includes(search.toLowerCase()) ||
+      item.supplierID.toLowerCase().includes(search.toLowerCase()) ||
+      item.tanggalKeluar.toLowerCase().includes(search.toLowerCase()) || // Filter for item.waktu
       item.qty.toString().includes(search) // Filter for item.qty
   );
 
