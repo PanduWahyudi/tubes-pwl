@@ -2,74 +2,33 @@ import { useState } from "react";
 import AdminLayout from "../components/Layouts/AdminLayout";
 import SearchBar from "../components/Elements/SearchBar";
 import { Pagination } from "flowbite-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import EditButton from "../components/Elements/EditButton";
 import DeleteButton from "../components/Elements/DeleteButton";
 import ConfirmationPopUP from "../components/Fragments/ConfirmationPopUp";
 import SucsessPopUp from "../components/Fragments/SucsessPopUp";
+import useSWR, { mutate } from "swr";
+import { axiosInstance } from "../utils/AxiosInstance";
 
 function UserPages() {
-  const dummy = [
-    {
-      id: 1,
-      nama: "Sumanto",
-      email: "sumanto@example.com",
-      role: "Admin",
-    },
-    {
-      id: 2,
-      nama: "Sumanto 1",
-      email: "sumanto@example.com",
-      role: "Admin",
-    },
-    {
-      id: 3,
-      nama: "Sumanto 2",
-      email: "sumanto@example.com",
-      role: "Admin",
-    },
-    {
-      id: 4,
-      nama: "Sumanto 3",
-      email: "sumanto@example.com",
-      role: "Admin",
-    },
-    {
-      id: 5,
-      nama: "Sumanto 4",
-      email: "sumanto@example.com",
-      role: "Admin",
-    },
-    {
-      nama: "Sumanto 5",
-      email: "sumanto@example.com",
-      role: "Admin",
-    },
-    {
-      id: 6,
-      nama: "Sumanto 6",
-      email: "sumanto@example.com",
-      role: "Admin",
-    },
-    {
-      id: 7,
-      nama: "Sumanto 7",
-      email: "sumanto@example.com",
-      role: "Admin",
-    },
-    {
-      id: 8,
-      nama: "Sumanto 8",
-      email: "sumanto@example.com",
-      role: "Admin",
-    },
-    {
-      id: 9,
-      nama: "Sumanto 9",
-      email: "sumanto@example.com",
-      role: "Admin",
-    },
-  ];
+  let dataUser = [];
+  const navigate = useNavigate();
+
+  const { data } = useSWR(`/api/v1/user`, (url) =>
+    axiosInstance
+      .get(url, {
+        headers: {
+          "ngrok-skip-browser-warning": "69420",
+        },
+      })
+      .then((res) => res.data)
+  );
+
+  const [targetId, setTargetId] = useState();
+
+  data?.map((item) => {
+    dataUser.push(item);
+  });
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
@@ -78,11 +37,11 @@ function UserPages() {
   const [isSuccesModalOpen, setIsSuccesModalOpen] = useState(false);
   const [search, setSearch] = useState("");
 
-  const filteredItems = dummy.filter(
+  const filteredItems = dataUser.filter(
     (item) =>
-      item.nama.toLowerCase().includes(search.toLowerCase()) ||
+      item.name.toLowerCase().includes(search.toLowerCase()) ||
       item.email.toLowerCase().includes(search.toLowerCase()) ||
-      item.role.toLowerCase().includes(search.toLowerCase())
+      item.role.name.toLowerCase().includes(search.toLowerCase())
   );
 
   const totalFilteredPages = Math.ceil(filteredItems.length / itemsPerPage);
@@ -93,8 +52,9 @@ function UserPages() {
 
   const onPageChange = (page) => setCurrentPage(page);
 
-  const openConfirModal = () => {
+  const openConfirModal = (id) => {
     setIsConfirModalOpen(true);
+    setTargetId(id);
   };
 
   const closeConfirModal = () => {
@@ -109,6 +69,18 @@ function UserPages() {
   const closeModal = () => {
     setIsConfirModalOpen(false);
   };
+
+  const handleDelete = () =>{
+    // console.log(targetId);
+    axiosInstance.delete(`/api/v1/user/?id=${targetId}`, {
+      headers: {
+        "ngrok-skip-browser-warning": "69420",
+      },
+    });
+    mutate("/api/v1/user");
+    closeModal();
+    setIsSuccesModalOpen(true);
+  }
 
   return (
     <AdminLayout titlePage="Pengguna">
@@ -158,19 +130,27 @@ function UserPages() {
                   <td scope="row" className="px-6 py-4 ">
                     {itemsPerPage * (currentPage - 1) + (index + 1)}
                   </td>
-                  <td className="px-6 py-4">{item.nama}</td>
+                  <td className="px-6 py-4">{item.name}</td>
                   <td className="px-6 py-4">{item.email}</td>
-                  <td className="px-6 py-4">{item.role}</td>
-
+                  <td className="px-6 py-4">{item.role.name}</td>
                   <td className="px-6 py-4 flex space-x-3 justify-center">
-                    <DeleteButton onClick={openConfirModal} />
-                    <Link to={"/pengguna/edit-pengguna" }>
-                      <EditButton />
-                    </Link>
+                    <DeleteButton onClick={()=>openConfirModal(item.id)} />
+                    {/* <Link to={"/pengguna/edit-pengguna" }> */}
+                    <EditButton
+                      onClick={() =>
+                        navigate(`/pengguna/edit-pengguna`, {
+                          state: {
+                            id: item.id,
+                            name: item.name,
+                            role: item.role,
+                          },
+                        })
+                      }
+                    />
+                    {/* </Link> */}
                     {isConfirModalOpen && (
                       <ConfirmationPopUP
-                        onClick={openConfirModal}
-                        Ok={closeConfirModal}
+                        Ok={()=>handleDelete()}
                         Cancel={closeModal}
                         teks=" Anda Yakin Ingin Menghapus Data"
                         type="button"
