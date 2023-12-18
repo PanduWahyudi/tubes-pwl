@@ -1,11 +1,12 @@
 import React from "react";
 import AdminLayout from "../components/Layouts/AdminLayout";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import SucsessPopUp from "../components/Fragments/SucsessPopUp";
 import Input from "../components/Elements/Input";
 import { useForm } from "react-hook-form";
 import ActionButton from "../components/Elements/ActionButton";
+import { axiosInstance } from "../utils/AxiosInstance";
 
 function EditCategoryPages() {
   const { register, handleSubmit, reset, formState } = useForm({
@@ -13,10 +14,19 @@ function EditCategoryPages() {
   });
 
   const [isSuccesUpdate, setIsSuccesUpdate] = useState(false);
+  const {state} = useLocation();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
+    let dataUpdate = {
+      id: state.id,
+      kategori: data.kategori,
+    }
+    await axiosInstance.put(`/api/v1/kategori`, dataUpdate,{
+      headers: {
+        "ngrok-skip-browser-warning": "69420",
+      },
+    })
     setIsSuccesUpdate(true);
-    console.log(data);
   };
   React.useEffect(() => {
     if (formState.isSubmitSuccessful) {
