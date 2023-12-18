@@ -8,7 +8,6 @@ import Input from "../components/Elements/Input";
 import SucsessPopUp from "../components/Fragments/SucsessPopUp";
 import useSWR, { mutate } from "swr";
 import { axiosInstance } from "../utils/AxiosInstance";
-import { useEffect } from "react";
 
 function EditItemPages() {
 

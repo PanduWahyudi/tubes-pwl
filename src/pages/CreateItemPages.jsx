@@ -6,31 +6,51 @@ import { useForm } from "react-hook-form";
 import ActionButton from "../components/Elements/ActionButton";
 import Input from "../components/Elements/Input";
 import SucsessPopUp from "../components/Fragments/SucsessPopUp";
+import { axiosInstance } from "../utils/AxiosInstance";
+import useSWR from "swr";
 
 function CreateItemPages() {
-  const opsi = [
-    { id: 0, value: "", label: "Pilih Kategori" },
-    { id: 1, value: "elektronik", label: "Elektronik" },
-    { id: 2, value: "makanan", label: "Makanan" },
-    { id: 3, value: "minuman", label: "minuman" },
-  ];
+  let opsi = [];
+
+  const {
+    data:dataKategori,
+    error,
+    isLoading,
+  } = useSWR(`/api/v1/kategori`, (url)=> axiosInstance.get(url, {
+    headers: {
+      "ngrok-skip-browser-warning": "69420",
+    },
+  }).then((res) => res.data)
+  );
+
+  if(dataKategori){
+    dataKategori.map((item)=>{
+      opsi.push(item)
+    })
+  }
 
   const [isSuccesUpdate, setIsSuccesUpdate] = useState(false);
 
   const { register, handleSubmit, reset, formState } = useForm({
-    defaultValues: { item: "", countries: "" },
+    defaultValues: { name: "", id: null },
   });
 
-  const [selectedOption, setSelectedOption] = useState("");
-
-  const onSubmit = (data) => {
-    console.log("Kategori yang dipilih:", selectedOption);
+  const onSubmit = async (data) => {
+    const dataUpdate = {
+      name : data.name,
+      kategoriId : parseInt(data.id)
+    }
+    await axiosInstance.post(`/api/v1/item`, dataUpdate, {
+      headers: {
+        "ngrok-skip-browser-warning": "69420",
+      },
+    })
     setIsSuccesUpdate(true);
-    console.log(data);
   };
+
   React.useEffect(() => {
     if (formState.isSubmitSuccessful) {
-      reset({ item: "", countries: "" });
+      reset({ name: "", id: null });
     }
   }, [formState, reset]);
 
@@ -48,26 +68,24 @@ function CreateItemPages() {
         <div className="flex flex-col">
           <Input
             type="text"
-            label="Nama Item "
+            label="Nama Item"
             placeholder="Nama Item"
             propsRegis={{
-              ...register("item", {
+              ...register("name", {
                 required: "Please enter your item",
               }),
             }}
           />
-          {/* <input type="text" className="w-full" /> */}
           <p className="mt-4 text-[24px] font-normal">Kategori</p>
-          <select
-            id="countries"
-            {...register("countries")}
-            onChange={(e) => setSelectedOption(e.target.value)}
+          <select 
+            id="id"
+            {...register("id")}
             className=" border border-[#8B8B8B] text-gray-900 text-sm rounded-lg focus:outline-none focus:visible focus:ring-[#8B8B8B] focus:border-[#8B8B8B] block w-64 p-2.5 
       mt-2"
           >
             {opsi.map((option) => (
-              <option key={option.id} value={option.value}>
-                {option.label}
+              <option key={option.id} value={option.id}>
+                {option.kategori}
               </option>
             ))}
           </select>
