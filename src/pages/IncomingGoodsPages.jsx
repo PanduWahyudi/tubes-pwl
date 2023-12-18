@@ -2,78 +2,32 @@ import { useState } from "react";
 import AdminLayout from "../components/Layouts/AdminLayout";
 import { Pagination } from "flowbite-react";
 import SearchBar from "../components/Elements/SearchBar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import EditButton from "../components/Elements/EditButton";
 import DeleteButton from "../components/Elements/DeleteButton";
 import ConfirmationPopUP from "../components/Fragments/ConfirmationPopUp";
 import SucsessPopUp from "../components/Fragments/SucsessPopUp";
+import useSWR, { mutate } from "swr";
+import { axiosInstance } from "../utils/AxiosInstance";
 
 function IncomingGoodsPages() {
-  const dummy = [
-    {
-      id: 1,
-      produk: "Televisi",
-      waktu: "25/11/2023",
-      idSupplier: "SP001",
-      qty: 100,
-    },
-    {
-      id: 2,
-      produk: "Televisi 1",
-      waktu: "25/11/2023",
-      idSupplier: "SP001",
-      qty: 100,
-    },
-    {
-      id: 3,
-      produk: "Televisi 2",
-      waktu: "25/11/2023",
-      idSupplier: "SP001",
-      qty: 100,
-    },
-    {
-      id: 4,
-      produk: "Televisi 3",
-      waktu: "25/11/2023",
-      idSupplier: "SP001",
-      qty: 100,
-    },
-    {
-      id: 5,
-      produk: "Televisi 4",
-      waktu: "25/11/2023",
-      idSupplier: "SP001",
-      qty: 100,
-    },
-    {
-      id: 6,
-      produk: "Televisi 5",
-      waktu: "25/11/2023",
-      idSupplier: "SP001",
-      qty: 100,
-    },
-    {
-      id: 7,
-      produk: "Televisi 6",
-      waktu: "25/11/2023",
-      idSupplier: "SP001",
-      qty: 100,
-    },
-    {
-      id: 8,
-      produk: "Televisi 7",
-      waktu: "25/11/2023",
-      idSupplier: "SP001",
-      qty: 100,
-    },
-    {
-      id: 9,
-      produk: "Televisi 8",
-      waktu: "25/11/2023",
-      idSupplier: "SP001",
-      qty: 110,
-    },
-  ];
+  let dataMasuk = [];
+  const [targetId, setTargetId] = useState();
+  const navigate = useNavigate();
+
+  const { data } = useSWR(`/api/v1/masuk`, (url) =>
+    axiosInstance
+      .get(url, {
+        headers: {
+          "ngrok-skip-browser-warning": "69420",
+        },
+      })
+      .then((res) => res.data)
+  );
+
+  data?.map((item) => {
+    dataMasuk.push(item);
+  });
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
@@ -82,11 +36,11 @@ function IncomingGoodsPages() {
   const [isSuccesModalOpen, setIsSuccesModalOpen] = useState(false);
   const [search, setSearch] = useState("");
 
-  const filteredItems = dummy.filter(
+  const filteredItems = dataMasuk.filter(
     (item) =>
-      item.produk.toLowerCase().includes(search.toLowerCase()) ||
-      item.idSupplier.toLowerCase().includes(search.toLowerCase()) ||
-      item.waktu.toLowerCase().includes(search.toLowerCase()) ||
+      item.item.toLowerCase().includes(search.toLowerCase()) ||
+      item.supplierID.toLowerCase().includes(search.toLowerCase()) ||
+      item.tanggalMasuk.toLowerCase().includes(search.toLowerCase()) ||
       item.qty.toString().includes(search)
   );
 
@@ -98,8 +52,9 @@ function IncomingGoodsPages() {
 
   const onPageChange = (page) => setCurrentPage(page);
 
-  const openConfirModal = () => {
+  const openConfirModal = (id) => {
     setIsConfirModalOpen(true);
+    setTargetId(id);
   };
 
   const closeConfirModal = () => {
@@ -114,6 +69,18 @@ function IncomingGoodsPages() {
   const closeModal = () => {
     setIsConfirModalOpen(false);
   };
+
+  const handleDelete = async () => {
+    console.log(targetId);
+    await axiosInstance.delete(`/api/v1/masuk/?id=${targetId}`, {
+      headers: {
+        "ngrok-skip-browser-warning": "69420",
+      },
+    });
+    mutate("/api/v1/masuk");
+    setIsConfirModalOpen(false);
+    setIsSuccesModalOpen(true);
+  }
 
   return (
     <AdminLayout titlePage="Barang Masuk">
@@ -166,20 +133,29 @@ function IncomingGoodsPages() {
                   <td scope="row" className="px-6 py-4 ">
                     {itemsPerPage * (currentPage - 1) + (index + 1)}
                   </td>
-                  <td className="px-6 py-4">{item.produk}</td>
-                  <td className="px-6 py-4">{item.waktu}</td>
-                  <td className="px-6 py-4">{item.idSupplier}</td>
+                  <td className="px-6 py-4">{item.item}</td>
+                  <td className="px-6 py-4">{item.tanggalMasuk}</td>
+                  <td className="px-6 py-4">{item.supplierID}</td>
                   <td className="px-6 py-4">{item.qty}</td>
 
                   <td className="px-6 py-4 flex space-x-3 justify-center">
-                    <DeleteButton onClick={openConfirModal} />
-                    <Link to={"/barang-masuk/edit-barang-masuk" }>
-                      <EditButton />
-                    </Link>
+                    <DeleteButton onClick={() => openConfirModal(item.id)} />
+                    <EditButton
+                      onClick={() =>
+                        navigate(`/barang-masuk/edit-barang-masuk`, {
+                          state: {
+                            id: item.id,
+                            item: item.item,
+                            supplierID: item.supplierID,
+                            qty: item.qty,
+                            tanggalMasuk: item.tanggalMasuk,
+                          },
+                        })
+                      }
+                    />
                     {isConfirModalOpen && (
                       <ConfirmationPopUP
-                        onClick={openConfirModal}
-                        Ok={closeConfirModal}
+                        Ok={() => handleDelete()}
                         Cancel={closeModal}
                         teks=" Anda Yakin Ingin Menghapus Data"
                         type="button"
